@@ -43,7 +43,16 @@ export interface ProcessStep {
   stepNumber: string;
   num: number;
   title: string;
+  shortTitle?: string;
+  subtitle?: string;
   description: string;
+  clarityLabel?: string;
+  clarityPercent?: number;
+  blurAmount?: number;
+  deliverables?: string[];
+  activities?: string[];
+  tools?: string[];
+  ctaLabel?: string;
   cloudAsset: string;
 }
 

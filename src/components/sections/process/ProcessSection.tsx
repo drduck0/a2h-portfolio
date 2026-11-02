@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pill } from '../../common/Pill';
 import { ProcessPanel } from './ProcessPanel';
 import { ASSETS } from '../../../constants/assets';
@@ -11,6 +11,19 @@ import { PROCESS_STEPS } from '../../../constants/portfolioData';
 
 export const ProcessSection: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    const handleStepChange = (e: Event) => {
+      const customEvent = e as CustomEvent<number>;
+      if (typeof customEvent.detail === 'number') {
+        setActiveStep(customEvent.detail);
+      }
+    };
+    window.addEventListener('process-step-change', handleStepChange);
+    return () => {
+      window.removeEventListener('process-step-change', handleStepChange);
+    };
+  }, []);
 
   return (
     <section className="loop" id="process" data-section="loop">
@@ -33,7 +46,6 @@ export const ProcessSection: React.FC = () => {
             key={step.num}
             step={step}
             isActive={activeStep === idx}
-            onActivate={() => setActiveStep(idx)}
           />
         ))}
       </div>

@@ -53,8 +53,8 @@ export default function App() {
           {/* Featured Works Showcase with Filters & Case Study Modals */}
           <ProjectsSection onInquire={() => setShowContactModal(true)} />
 
-          {/* Design Process 5-Panel Interactive Accordion */}
-          <ProcessSection />
+          {/* Design Process 5-Step Vertical Journey */}
+          <ProcessSection onInquire={() => setShowContactModal(true)} />
 
           {/* Let's Connect CTA & Petals */}
           <ContactSection

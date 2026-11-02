@@ -409,11 +409,23 @@ export function useScrollAnimations() {
           );
         });
 
-        // Loop accordion (desktop/laptop >= 1025px)
-        mm.add('(min-width: 1025px)', () => {
+        // Helper to activate a process panel purely via scroll
+        const processPanels = Array.from(document.querySelectorAll<HTMLElement>('#process .panel'));
+        let currentProcessIdx = 0;
+        function setProcessStep(idx: number) {
+          if (idx === currentProcessIdx) return;
+          currentProcessIdx = idx;
+          processPanels.forEach((panel, i) => {
+            panel.classList.toggle('is-active', i === idx);
+          });
+          window.dispatchEvent(new CustomEvent('process-step-change', { detail: idx }));
+        }
+
+        // Loop accordion (desktop/laptop >= 901px): pinned scroll-driven progression
+        mm.add('(min-width: 901px)', () => {
           gsap.fromTo(
-            '.panel-in',
-            { y: 60, opacity: 0 },
+            '#process .panel-in',
+            { y: 80, opacity: 0 },
             {
               y: 0,
               opacity: 1,
@@ -422,26 +434,42 @@ export function useScrollAnimations() {
               ease: 'power3.out',
               scrollTrigger: {
                 trigger: '#process',
-                start: 'top 80%',
+                start: 'top 75%',
               },
             }
           );
 
+          ScrollTrigger.create({
+            trigger: '#process',
+            start: 'top top',
+            end: () => `+=${window.innerHeight * 2.4}`,
+            pin: true,
+            scrub: true,
+            onUpdate: (self: any) => {
+              if (!processPanels.length) return;
+              const idx = Math.min(
+                processPanels.length - 1,
+                Math.floor(self.progress * processPanels.length)
+              );
+              setProcessStep(idx);
+            },
+          });
+
           gsap.to('.loop-cloud', {
-            x: 60,
+            x: 70,
             ease: 'none',
             scrollTrigger: {
               trigger: '#process',
               start: 'top bottom',
-              end: 'bottom top',
+              end: () => `+=${window.innerHeight * 3.4}`,
               scrub: true,
             },
           });
         });
 
-        // Loop tablet & mobile (<= 1024px)
-        mm.add('(max-width: 1024px)', () => {
-          document.querySelectorAll('.panel').forEach((panel) => {
+        // Loop tablet & mobile (<= 900px): scroll-driven reveal & active state
+        mm.add('(max-width: 900px)', () => {
+          processPanels.forEach((panel, idx) => {
             gsap.from(panel, {
               y: 30,
               opacity: 0,
@@ -449,7 +477,9 @@ export function useScrollAnimations() {
               ease: 'power3.out',
               scrollTrigger: {
                 trigger: panel,
-                start: 'top 90%',
+                start: 'top 88%',
+                onEnter: () => setProcessStep(idx),
+                onEnterBack: () => setProcessStep(idx),
               },
             });
           });

@@ -918,46 +918,38 @@ section.loop,
 section#loop,
 section#process {
   position: relative;
-  min-height: 440px;
+  height: 100vh;
+  min-height: 680px;
   background: #fff;
   overflow: hidden;
-}
-
-@media (min-width: 1025px) {
-  section.loop,
-  section#loop,
-  section#process {
-    height: 60vh;
-    min-height: 440px;
-    max-height: 540px;
-  }
 }
 
 .loop-cloud {
   position: absolute;
   z-index: 3;
-  top: 2vh;
-  left: -4vw;
-  width: min(32vw, 460px);
+  top: 6vh;
+  left: -5vw;
+  width: min(38vw, 560px);
   pointer-events: none;
 }
 
 .loop-head {
   position: absolute;
   z-index: 4;
-  top: clamp(14px, 2.5vh, 26px);
+  top: clamp(56px, 10vh, 110px);
   left: 0;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 0 16px;
+  gap: 16px;
+  padding: 0 20px;
   pointer-events: none;
 }
 
 .loop-head h2.h2 {
-  font-size: clamp(20px, 2.2vw, 28px);
+  font-size: clamp(28px, 3.2vw, 46px);
+  max-width: 680px;
 }
 
 .track,
@@ -970,11 +962,11 @@ section#process {
 
 .panel {
   position: relative;
-  flex: 0 0 clamp(68px, 6.8vw, 110px);
+  flex: 0 0 clamp(84px, 8.5vw, 134px);
   height: 100%;
   overflow: hidden;
   border-right: 1px solid var(--line);
-  cursor: pointer;
+  cursor: default;
   outline: none;
   transition: flex-grow 0.8s cubic-bezier(0.77, 0, 0.18, 1);
 }
@@ -990,16 +982,16 @@ section#process {
 
 .panel-in {
   position: absolute;
-  left: clamp(14px, 1.8vw, 28px);
-  bottom: clamp(14px, 2.5vh, 28px);
+  left: clamp(20px, 2.4vw, 38px);
+  bottom: clamp(28px, 4.5vh, 52px);
   display: flex;
   align-items: flex-end;
-  gap: clamp(12px, 1.4vw, 22px);
+  gap: clamp(22px, 2.4vw, 38px);
   width: max-content;
 }
 
 .num {
-  font-size: clamp(70px, 13vh, 140px);
+  font-size: clamp(190px, 42vh, 420px);
   font-weight: 600;
   line-height: 0.74;
   letter-spacing: -0.07em;
@@ -1024,8 +1016,8 @@ section#process {
 
 .step {
   position: relative;
-  width: min(380px, 26vw);
-  padding-bottom: 4px;
+  width: min(420px, 28vw);
+  padding-bottom: clamp(8px, 1.5vh, 18px);
 }
 
 .panel:not(.is-active) .step {
@@ -1045,25 +1037,25 @@ section#process {
 
 .step h3 {
   font-family: var(--font);
-  font-size: clamp(18px, 1.7vw, 24px);
+  font-size: clamp(20px, 1.8vw, 26px);
   font-weight: 600;
   letter-spacing: -0.025em;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   line-height: 1.15;
   color: var(--ink);
 }
 
 .step p {
-  font-size: 13.5px;
-  line-height: 1.45;
+  font-size: clamp(14px, 1.1vw, 15.5px);
+  line-height: 1.5;
   color: #2b2e27;
 }
 
 .mini-cloud {
   position: absolute;
-  left: -10%;
-  bottom: calc(100% + clamp(30px, 6vh, 80px));
-  width: min(15vw, 180px);
+  left: 40%;
+  bottom: calc(100% + clamp(50px, 11vh, 130px));
+  width: min(18vw, 240px);
   max-width: none;
   animation: driftA 9s ease-in-out infinite alternate;
   pointer-events: none;
@@ -2069,15 +2061,17 @@ footer#footer {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+}
 
-  /* Process section on tablets & mobile */
+@media (max-width: 900px) {
+  /* Process section on smaller tablets & mobile */
   section.loop,
   section#loop,
   section#process {
     height: auto !important;
     min-height: 0 !important;
     max-height: none !important;
-    padding: 44px 0 32px;
+    padding: 64px 0 48px;
     overflow: visible;
     background: #fff;
   }
@@ -2085,7 +2079,7 @@ footer#footer {
     position: relative;
     top: auto;
     left: auto;
-    margin-bottom: 18px;
+    margin-bottom: 28px;
     pointer-events: auto;
   }
   .loop-cloud {
@@ -2100,7 +2094,7 @@ footer#footer {
     inset: auto;
     flex-direction: column;
     margin-top: 12px;
-    gap: 10px;
+    gap: 14px;
     padding: 0 16px;
     max-width: 820px;
     margin-left: auto;
@@ -2112,15 +2106,10 @@ footer#footer {
     height: auto;
     overflow: visible;
     border: 1px solid #e2e8d7;
-    border-radius: 14px;
+    border-radius: 16px;
     background: #fafcf6;
-    cursor: pointer;
+    cursor: default;
     transition: all 0.25s ease;
-  }
-  .panel:hover {
-    border-color: rgba(111, 154, 12, 0.4);
-    background: #fff;
-    box-shadow: 0 6px 18px rgba(77, 106, 16, 0.06);
   }
   .panel.is-active {
     border-color: rgba(111, 154, 12, 0.5);
@@ -2132,15 +2121,15 @@ footer#footer {
     left: auto;
     bottom: auto;
     width: 100%;
-    padding: 14px 20px;
-    gap: 16px;
+    padding: 18px 22px;
+    gap: 18px;
     display: flex;
     align-items: center;
   }
   .num {
-    font-size: clamp(34px, 5.5vw, 48px);
+    font-size: clamp(48px, 9vw, 72px);
     line-height: 1;
-    min-width: 44px;
+    min-width: 56px;
     flex-shrink: 0;
   }
   .panel:not(.is-active) .step,
@@ -2153,12 +2142,12 @@ footer#footer {
     padding-bottom: 0;
   }
   .step h3 {
-    font-size: clamp(15px, 2vw, 18px);
-    margin-bottom: 4px;
+    font-size: clamp(16px, 2.2vw, 20px);
+    margin-bottom: 6px;
   }
   .step p {
-    font-size: 13px;
-    line-height: 1.45;
+    font-size: 13.5px;
+    line-height: 1.5;
   }
   .mini-cloud {
     display: none !important;
