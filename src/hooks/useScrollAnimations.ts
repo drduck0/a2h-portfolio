@@ -154,12 +154,25 @@ export function useScrollAnimations() {
       gsap.ticker.add(tickerCallback);
       gsap.ticker.lagSmoothing(0);
 
+      let isProgrammaticNav = false;
+      let navTimeoutId: number | null = null;
+
       document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener('click', (e) => {
           const targetId = anchor.getAttribute('href');
           if (targetId && targetId !== '#') {
             e.preventDefault();
-            lenisInstance?.scrollTo(targetId, { duration: 1.6 });
+            isProgrammaticNav = true;
+            if (navTimeoutId) window.clearTimeout(navTimeoutId);
+            navTimeoutId = window.setTimeout(() => {
+              isProgrammaticNav = false;
+            }, 1700);
+            lenisInstance?.scrollTo(targetId, {
+              duration: 1.6,
+              onComplete: () => {
+                isProgrammaticNav = false;
+              },
+            });
           }
         });
       });
@@ -168,18 +181,22 @@ export function useScrollAnimations() {
       lenisInstance.stop();
       const heroWords = document.querySelectorAll('#heroTitle .w');
       const nav = document.querySelector('.nav');
+      const glassStack = document.querySelector('.a2h-glass-stack');
       const heroPill = document.querySelector('.hero-pill-role');
-      const heroBio = document.querySelector('.hero-bio');
       const heroActions = document.querySelector('.hero-actions');
+      const rightHud = document.querySelector('.a2h-hero__right-hud');
+      const connectDock = document.querySelector('.a2h-connect-dock');
 
-      gsap.set(heroWords, { opacity: 0, y: 24, filter: 'blur(10px)' });
-      gsap.set(nav, { opacity: 0, y: -16 });
-      if (heroPill) gsap.set(heroPill, { opacity: 0, y: 14 });
-      if (heroBio) gsap.set(heroBio, { opacity: 0, y: 16 });
-      if (heroActions) gsap.set(heroActions, { opacity: 0, y: 18 });
+      gsap.set(heroWords, { opacity: 0, y: 20, filter: 'blur(8px)' });
+      if (nav) gsap.set(nav, { opacity: 0, y: -16 });
+      if (glassStack) gsap.set(glassStack, { opacity: 0, y: 24, scale: 0.97 });
+      if (heroPill) gsap.set(heroPill, { opacity: 0, y: 12 });
+      if (heroActions) gsap.set(heroActions, { opacity: 0, y: 14 });
+      if (rightHud) gsap.set(rightHud, { opacity: 0, x: 18 });
+      if (connectDock) gsap.set(connectDock, { opacity: 0, y: 20 });
 
       const introTl = gsap.timeline({
-        delay: 0.25,
+        delay: 0.2,
         onComplete: () => {
           document.body.classList.remove('intro');
           gsap.set('#app', { clearProps: 'all' });
@@ -194,79 +211,79 @@ export function useScrollAnimations() {
         .fromTo(
           '#app',
           { scale: 0.9, borderRadius: 28 },
-          { scale: 1, borderRadius: 0, duration: 1.4, ease: 'expo.inOut' }
+          { scale: 1, borderRadius: 0, duration: 1.35, ease: 'expo.inOut' }
+        )
+        .to(
+          glassStack,
+          { opacity: 1, y: 0, scale: 1, duration: 0.95, ease: 'power3.out' },
+          '-=0.65'
+        )
+        .to(heroPill, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.7')
+        .to(
+          heroWords,
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, stagger: 0.06, ease: 'power3.out' },
+          '-=0.55'
+        )
+        .to(heroActions, { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, '-=0.55')
+        .to(
+          rightHud,
+          { opacity: 1, x: 0, duration: 0.75, ease: 'power3.out' },
+          '-=0.6'
+        )
+        .to(
+          connectDock,
+          { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' },
+          '-=0.65'
         )
         .to(
           nav,
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 0.6,
             ease: 'power3.out',
             clearProps: 'transform,opacity',
           },
           '-=0.5'
-        )
-        .to(heroPill, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.6')
-        .to(
-          heroWords,
-          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, stagger: 0.06, ease: 'power3.out' },
-          '-=0.5'
-        )
-        .to(heroBio, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-        .to(heroActions, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-        .from('.cloud-l', { x: -120, opacity: 0, duration: 1.6, ease: 'power3.out' }, 0.4)
-        .from('.cloud-r', { x: 120, opacity: 0, duration: 1.6, ease: 'power3.out' }, 0.4)
-        .from(
-          '#heroGlass .glass',
-          {
-            opacity: 0,
-            scale: 0.6,
-            duration: 0.6,
-            stagger: { each: 0.05, from: 'random' },
-            ease: 'back.out(2)',
-          },
-          '-=1'
         );
 
       // 6. setupScroll
       function setupScroll() {
-        // Hero parallax
-        gsap.to('.hero-content', {
-          yPercent: -45,
-          ease: 'none',
+        // Scroll-Triggered 3D Scene on #hero (pinned forward camera dolly + 3D A2H transform)
+        const heroTl = gsap.timeline({
           scrollTrigger: {
             trigger: '#hero',
             start: 'top top',
-            end: 'bottom top',
-            scrub: true,
-          },
-        });
-
-        document.querySelectorAll<HTMLElement>('.hero [data-par]').forEach((el) => {
-          const par = parseFloat(el.getAttribute('data-par') || '0');
-          gsap.to(el, {
-            y: par * 2,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: '#hero',
-              start: 'top top',
-              end: 'bottom top',
-              scrub: true,
+            end: '+=140%',
+            pin: true,
+            scrub: 0.6,
+            onUpdate: (self: any) => {
+              window.dispatchEvent(
+                new CustomEvent('a2h-hero-scroll', { detail: self.progress })
+              );
             },
-          });
-        });
-
-        gsap.to('.hero-media', {
-          yPercent: 8,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '#hero',
-            start: 'top top',
-            end: 'bottom top',
-            scrub: true,
           },
         });
+
+        heroTl
+          .to(
+            '.a2h-hero__bg',
+            {
+              scale: 1.14,
+              yPercent: 4,
+              ease: 'none',
+            },
+            0
+          )
+          .to(
+            '.a2h-glass-stack',
+            {
+              yPercent: -14,
+              scale: 0.97,
+              ease: 'none',
+            },
+            0
+          );
 
         // Reveal elements
         document.querySelectorAll('.reveal').forEach((el) => {
@@ -409,19 +426,55 @@ export function useScrollAnimations() {
           );
         });
 
-        // Helper to activate a process panel purely via scroll
+        // Helper to activate a process panel purely via scroll (never skipping intermediate steps)
         const processPanels = Array.from(document.querySelectorAll<HTMLElement>('#process .panel'));
+        const totalProcessSteps = processPanels.length;
         let currentProcessIdx = 0;
-        function setProcessStep(idx: number) {
-          if (idx === currentProcessIdx) return;
-          currentProcessIdx = idx;
+        let targetProcessIdx = 0;
+        let stepQueueTimer: number | null = null;
+
+        function applyProcessStep(idx: number) {
+          const clamped = Math.max(0, Math.min(totalProcessSteps - 1, idx));
+          currentProcessIdx = clamped;
+          targetProcessIdx = clamped;
+          if (stepQueueTimer !== null) {
+            window.clearTimeout(stepQueueTimer);
+            stepQueueTimer = null;
+          }
           processPanels.forEach((panel, i) => {
-            panel.classList.toggle('is-active', i === idx);
+            panel.classList.toggle('is-active', i === clamped);
           });
-          window.dispatchEvent(new CustomEvent('process-step-change', { detail: idx }));
+          window.dispatchEvent(new CustomEvent('process-step-change', { detail: clamped }));
         }
 
-        // Loop accordion (desktop/laptop >= 901px): pinned scroll-driven progression
+        function queueProcessStep(idx: number) {
+          targetProcessIdx = Math.max(0, Math.min(totalProcessSteps - 1, idx));
+          if (targetProcessIdx === currentProcessIdx) return;
+          if (stepQueueTimer !== null) return;
+
+          const advanceOne = () => {
+            if (currentProcessIdx === targetProcessIdx) {
+              stepQueueTimer = null;
+              return;
+            }
+            const next = currentProcessIdx + Math.sign(targetProcessIdx - currentProcessIdx);
+            currentProcessIdx = next;
+            processPanels.forEach((panel, i) => {
+              panel.classList.toggle('is-active', i === next);
+            });
+            window.dispatchEvent(new CustomEvent('process-step-change', { detail: next }));
+
+            if (currentProcessIdx !== targetProcessIdx) {
+              stepQueueTimer = window.setTimeout(advanceOne, 320);
+            } else {
+              stepQueueTimer = null;
+            }
+          };
+
+          advanceOne();
+        }
+
+        // Loop accordion (desktop/laptop >= 901px): pinned one-step-at-a-time scroll progression
         mm.add('(min-width: 901px)', () => {
           gsap.fromTo(
             '#process .panel-in',
@@ -439,21 +492,84 @@ export function useScrollAnimations() {
             }
           );
 
-          ScrollTrigger.create({
+          let stepLockUntil = 0;
+          let isStepAnimating = false;
+
+          const processSt = ScrollTrigger.create({
             trigger: '#process',
             start: 'top top',
-            end: () => `+=${window.innerHeight * 2.4}`,
+            end: () => `+=${window.innerHeight * 3.6}`,
             pin: true,
-            scrub: true,
+            scrub: 0.6,
+            onEnter: () => {
+              if (!isProgrammaticNav) {
+                stepLockUntil = performance.now() + 520;
+                applyProcessStep(0);
+                lenisInstance?.scrollTo(processSt.start, { immediate: true });
+              }
+            },
+            onEnterBack: () => {
+              if (!isProgrammaticNav) {
+                stepLockUntil = performance.now() + 520;
+                applyProcessStep(totalProcessSteps - 1);
+                lenisInstance?.scrollTo(processSt.end, { immediate: true });
+              }
+            },
             onUpdate: (self: any) => {
-              if (!processPanels.length) return;
+              if (!totalProcessSteps || isStepAnimating) return;
               const idx = Math.min(
-                processPanels.length - 1,
-                Math.floor(self.progress * processPanels.length)
+                totalProcessSteps - 1,
+                Math.max(0, Math.round(self.progress * (totalProcessSteps - 1)))
               );
-              setProcessStep(idx);
+              queueProcessStep(idx);
             },
           });
+
+          const getStepScrollY = (stepIdx: number) => {
+            if (totalProcessSteps <= 1) return processSt.start;
+            const ratio = stepIdx / (totalProcessSteps - 1);
+            return processSt.start + ratio * (processSt.end - processSt.start);
+          };
+
+          const handleProcessWheel = (e: WheelEvent) => {
+            if (isProgrammaticNav || !processSt.isActive) return;
+
+            const now = performance.now();
+            // Absorb fast wheel/trackpad momentum while a step transition is locked
+            if (now < stepLockUntil || isStepAnimating) {
+              e.preventDefault();
+              e.stopPropagation();
+              return;
+            }
+
+            if (Math.abs(e.deltaY) < 6) return;
+
+            const dir = e.deltaY > 0 ? 1 : -1;
+            const nextStep = currentProcessIdx + dir;
+
+            // If there is another step in the scroll direction, advance strictly 1 step
+            if (nextStep >= 0 && nextStep < totalProcessSteps) {
+              e.preventDefault();
+              e.stopPropagation();
+              isStepAnimating = true;
+              stepLockUntil = now + 580;
+              applyProcessStep(nextStep);
+
+              const targetY = getStepScrollY(nextStep);
+              lenisInstance?.scrollTo(targetY, {
+                duration: 0.52,
+                lock: true,
+                onComplete: () => {
+                  isStepAnimating = false;
+                },
+              });
+              window.setTimeout(() => {
+                isStepAnimating = false;
+              }, 560);
+            }
+          };
+
+          window.addEventListener('wheel', handleProcessWheel, { passive: false });
 
           gsap.to('.loop-cloud', {
             x: 70,
@@ -461,10 +577,14 @@ export function useScrollAnimations() {
             scrollTrigger: {
               trigger: '#process',
               start: 'top bottom',
-              end: () => `+=${window.innerHeight * 3.4}`,
+              end: () => `+=${window.innerHeight * 4.6}`,
               scrub: true,
             },
           });
+
+          return () => {
+            window.removeEventListener('wheel', handleProcessWheel);
+          };
         });
 
         // Loop tablet & mobile (<= 900px): scroll-driven reveal & active state
@@ -478,8 +598,8 @@ export function useScrollAnimations() {
               scrollTrigger: {
                 trigger: panel,
                 start: 'top 88%',
-                onEnter: () => setProcessStep(idx),
-                onEnterBack: () => setProcessStep(idx),
+                onEnter: () => queueProcessStep(idx),
+                onEnterBack: () => queueProcessStep(idx),
               },
             });
           });

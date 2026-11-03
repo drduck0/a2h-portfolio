@@ -13,28 +13,40 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isFooterReached, setIsFooterReached] = useState(false);
+  const [isNavHidden, setIsNavHidden] = useState(true);
 
   useEffect(() => {
-    const footerEl = document.getElementById('footer');
-    if (!footerEl) return;
+    const checkScroll = () => {
+      const heroEl = document.getElementById('hero');
+      const footerEl = document.getElementById('footer');
+      const vh = window.innerHeight;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const reached = entry.isIntersecting;
-        setIsFooterReached(reached);
-        if (reached) {
-          setMobileMenuOpen(false);
-        }
-      },
-      {
-        root: null,
-        threshold: 0.08,
+      let inHero = false;
+      if (heroEl) {
+        const heroRect = heroEl.getBoundingClientRect();
+        inHero = heroRect.bottom > vh * 0.35;
       }
-    );
 
-    observer.observe(footerEl);
-    return () => observer.disconnect();
+      let inFooter = false;
+      if (footerEl) {
+        const footerRect = footerEl.getBoundingClientRect();
+        inFooter = footerRect.top < vh * 0.92;
+      }
+
+      const shouldHide = inHero || inFooter;
+      setIsNavHidden(shouldHide);
+      if (shouldHide) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    checkScroll();
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('resize', checkScroll);
+    return () => {
+      window.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', checkScroll);
+    };
   }, []);
 
   const handleNavClick = () => {
@@ -43,7 +55,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
 
   return (
     <>
-      <header className={`nav ${isFooterReached ? 'nav--hidden' : ''}`}>
+      <header className={`nav ${isNavHidden ? 'nav--hidden' : ''}`}>
         <a className="brand" href="#hero" aria-label="A2H portfolio home" onClick={handleNavClick}>
           <svg viewBox="0 0 30 22" width="28" height="20" aria-hidden="true">
             <circle cx="4" cy="17" r="3.6" fill="currentColor" />
@@ -90,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
       </header>
 
       {/* Mobile Dropdown Navigation Menu */}
-      {mobileMenuOpen && !isFooterReached && (
+      {mobileMenuOpen && !isNavHidden && (
         <div className="mobile-nav-overlay" onClick={() => setMobileMenuOpen(false)}>
           <div className="mobile-nav-panel" onClick={(e) => e.stopPropagation()}>
             <nav className="mobile-nav-links" aria-label="Mobile Navigation">

@@ -9,7 +9,11 @@ import { ProcessPanel } from './ProcessPanel';
 import { ASSETS } from '../../../constants/assets';
 import { PROCESS_STEPS } from '../../../constants/portfolioData';
 
-export const ProcessSection: React.FC = () => {
+interface ProcessSectionProps {
+  onInquire?: () => void;
+}
+
+export const ProcessSection: React.FC<ProcessSectionProps> = () => {
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {

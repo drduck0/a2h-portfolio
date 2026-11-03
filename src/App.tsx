@@ -6,7 +6,6 @@
 import { useState } from 'react';
 import { useScrollAnimations } from './hooks/useScrollAnimations';
 import { useClipboard } from './hooks/useClipboard';
-import { Backdrop } from './components/layout/Backdrop';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { HeroSection } from './components/sections/hero/HeroSection';
@@ -29,20 +28,20 @@ export default function App() {
 
   return (
     <>
-      {/* Initial blurred backdrop (cleaned up after intro animation) */}
-      <Backdrop />
-
       {/* Main Portfolio Shell */}
       <div id="app">
-        {/* Floating pill navigation */}
+        {/* Floating pill navigation (appears when scrolled past hero) */}
         <Navbar
           onOpenResume={() => setShowResumeModal(true)}
           onOpenContact={() => setShowContactModal(true)}
         />
 
         <main>
-          {/* Hero Section */}
-          <HeroSection onOpenResume={() => setShowResumeModal(true)} />
+          {/* Mainframe-Inspired Hero Section */}
+          <HeroSection
+            onOpenResume={() => setShowResumeModal(true)}
+            onOpenContact={() => setShowContactModal(true)}
+          />
 
           {/* About Me & Stats with Cherry Tree & Software Tools */}
           <AboutSection />

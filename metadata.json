@@ -1,6 +1,6 @@
 {
-  "name": "Petalyx",
-  "description": "Benchmark the impact of all your AI staff.",
+  "name": "Snail & Nail — Haute Parfumerie",
+  "description": "An intimate, cinematic scroll-driven olfactory experience for Snail & Nail artisanal fragrances.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
