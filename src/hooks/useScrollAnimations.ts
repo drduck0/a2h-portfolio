@@ -344,7 +344,6 @@ export function useScrollAnimations() {
         const aboutWords = document.querySelectorAll('#heroAboutTitle .w');
         const aboutParas = document.querySelectorAll('.a2h-about-para');
         const aboutStats = document.querySelectorAll('.a2h-about-stat');
-        const aboutTools = document.querySelectorAll('.a2h-about-tool-chip');
 
         if (aboutBody) gsap.set(aboutBody, { autoAlpha: 0, pointerEvents: 'none' });
         if (aboutPill) gsap.set(aboutPill, { opacity: 0, y: 16, filter: 'blur(6px)' });
@@ -353,7 +352,6 @@ export function useScrollAnimations() {
         if (aboutStats.length) {
           gsap.set(aboutStats, { opacity: 0, y: 18, scale: 0.96, filter: 'blur(6px)' });
         }
-        if (aboutTools.length) gsap.set(aboutTools, { opacity: 0, y: 12, filter: 'blur(4px)' });
 
         // Compute responsive initial and expanded dimensions for the glass card
         const getInitialCardMetrics = () => {
@@ -402,9 +400,9 @@ export function useScrollAnimations() {
 
           if (vw <= 768) {
             const w = Math.round(vw * 0.92);
-            const naturalH = measureAboutNaturalHeight(74);
+            const naturalH = measureAboutNaturalHeight(88);
             const h = Math.round(
-              Math.min(vh - 32, Math.max(naturalH, 385))
+              Math.min(vh - 28, Math.max(naturalH, 400))
             );
             const desiredTop = Math.max(14, (vh - h) / 2);
             return {
@@ -663,20 +661,8 @@ export function useScrollAnimations() {
             },
             6.7
           )
-          .to(
-            '.a2h-about-tool-chip',
-            {
-              opacity: 1,
-              y: 0,
-              filter: 'blur(0px)',
-              stagger: 0.05,
-              duration: 1.0,
-              ease: 'power3.out',
-            },
-            7.2
-          )
           // Hold buffer at the end of the 16:9 About Us reveal
-          .to({}, { duration: 1.0 }, 9.0);
+          .to({}, { duration: 1.0 }, 8.8);
 
         // Reveal elements
         document.querySelectorAll('.reveal').forEach((el) => {

@@ -6,7 +6,6 @@
 import React from 'react';
 import { Pill } from '../../common/Pill';
 import { StatCard } from './StatCard';
-import { SoftwareSkills } from './SoftwareSkills';
 import { ASSETS } from '../../../constants/assets';
 import { PERSONAL_INFO, STATS } from '../../../constants/portfolioData';
 
@@ -41,7 +40,7 @@ export const AboutSection: React.FC = () => {
           </p>
         </div>
 
-        {/* 4 Ticket Cards */}
+        {/* 4 Performance Score Cards */}
         <div className="cards">
           {STATS.map((stat, idx) => (
             <StatCard key={idx} stat={stat} />
@@ -49,9 +48,6 @@ export const AboutSection: React.FC = () => {
         </div>
 
         <div className="cards-shadow" />
-
-        {/* Software Skills Banner with frosted strip */}
-        <SoftwareSkills />
       </div>
     </section>
   );

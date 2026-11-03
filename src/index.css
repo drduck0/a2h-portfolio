@@ -389,9 +389,9 @@ section.hero,
 }
 
 .a2h-glass-lip {
-  width: 98.4%;
-  height: 15px;
-  margin: 0 auto -2px;
+  width: calc(100% - 36px);
+  height: 11px;
+  margin: 0 auto -1px;
   border-radius: 14px 14px 0 0;
   background: linear-gradient(
     180deg,
@@ -691,29 +691,6 @@ h2#heroAboutTitle.a2h-about-title em {
   letter-spacing: -0.03em;
   color: #070907;
   line-height: 1.05;
-}
-
-.a2h-about-tools {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: clamp(8px, 0.9vw, 13px);
-  width: min(1140px, 100%);
-}
-
-.a2h-about-tool-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.94);
-  font-size: clamp(11.5px, 0.9vw, 13.5px);
-  font-weight: 600;
-  color: #0b0d0b;
-  box-shadow: 0 3px 10px rgba(10, 14, 10, 0.05);
 }
 
 .a2h-glass-kicker {
@@ -1065,9 +1042,20 @@ h1#heroTitle.a2h-glass-title {
     margin: clamp(16px, 5.5vh, 42px) auto 0;
   }
 
+  .a2h-glass-lip {
+    display: none;
+  }
+
   .a2h-glass-card {
     min-height: 265px;
-    padding: 14px 14px 18px;
+    padding: 14px 16px 18px;
+    border-radius: 20px;
+  }
+
+  .a2h-glass-header {
+    padding-bottom: 10px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.45);
   }
 
   .a2h-glass-nav {
@@ -1137,20 +1125,29 @@ h1#heroTitle.a2h-glass-title {
   }
 
   .a2h-glass-about {
-    padding: 8px 4px 4px;
+    padding: 12px 6px 6px;
     justify-content: space-between;
   }
 
   .a2h-about-pill {
     font-size: 10.5px;
-    padding: 4px 12px;
-    margin-bottom: 4px;
+    padding: 4px 13px;
+    margin-bottom: 6px;
   }
 
   h2#heroAboutTitle.a2h-about-title {
-    font-size: clamp(18px, 5.2vw, 24px);
-    line-height: 1.15;
-    margin-bottom: 6px;
+    font-size: clamp(18px, 5vw, 22px);
+    line-height: 1.2;
+    max-width: 19.5ch;
+    margin: 0 auto 8px;
+  }
+
+  h2#heroAboutTitle.a2h-about-title br {
+    display: none;
+  }
+
+  h2#heroAboutTitle.a2h-about-title em {
+    display: block;
   }
 
   .a2h-about-narrative {
@@ -1167,30 +1164,21 @@ h1#heroTitle.a2h-glass-title {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     margin-bottom: 8px;
+    width: 100%;
   }
 
   .a2h-about-stat.card {
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 12px;
-    gap: 3px;
+    gap: 4px;
   }
 
   .a2h-about-stat__label {
-    font-size: 10px;
+    font-size: 10.5px;
   }
 
   .a2h-about-stat__val {
-    font-size: clamp(16px, 4.6vw, 20px);
-  }
-
-  .a2h-about-tools {
-    gap: 6px;
-  }
-
-  .a2h-about-tool-chip {
-    padding: 4px 10px;
-    font-size: 10px;
-    gap: 5px;
+    font-size: clamp(18px, 5vw, 22px);
   }
 }
 

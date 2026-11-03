@@ -4,25 +4,8 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import {
-  PenTool,
-  Palette,
-  Sliders,
-  Layers,
-  Video,
-  Sparkles,
-} from 'lucide-react';
 import { ASSETS } from '../../../constants/assets';
-import { PERSONAL_INFO, STATS, SOFTWARE_TOOLS } from '../../../constants/portfolioData';
-
-const ICONS_MAP = {
-  'pen-tool': PenTool,
-  palette: Palette,
-  sliders: Sliders,
-  layers: Layers,
-  video: Video,
-  sparkles: Sparkles,
-};
+import { PERSONAL_INFO, STATS } from '../../../constants/portfolioData';
 
 interface HeroSectionProps {
   onOpenResume?: () => void;
@@ -289,19 +272,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                       <b className="a2h-about-stat__val">{stat.initialText}</b>
                     </div>
                   ))}
-                </div>
-
-                {/* Software Tools Chips */}
-                <div className="a2h-about-tools">
-                  {SOFTWARE_TOOLS.map((tool) => {
-                    const IconComp = ICONS_MAP[tool.icon];
-                    return (
-                      <span key={tool.name} className="a2h-about-tool-chip">
-                        <IconComp size={13} color={tool.color} />
-                        <span>{tool.name}</span>
-                      </span>
-                    );
-                  })}
                 </div>
               </div>
             </div>
