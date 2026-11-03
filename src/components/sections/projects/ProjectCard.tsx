@@ -61,9 +61,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) =
                 key={idx}
                 style={{
                   fontSize: '11px',
-                  background: '#edf2e4',
-                  color: '#344018',
-                  padding: '3px 8px',
+                  background: '#f0f2f0',
+                  color: '#1e221e',
+                  border: '1px solid rgba(11, 13, 11, 0.08)',
+                  padding: '3px 9px',
                   borderRadius: '999px',
                 }}
               >

@@ -28,7 +28,7 @@ export const ExpertiseCard: React.FC<ExpertiseCardProps> = ({ skill }) => {
 
       <div>
         <h3>{skill.title}</h3>
-        <p style={{ fontSize: '13.5px', color: '#566048', marginTop: '4px' }}>
+        <p style={{ fontSize: '13.5px', color: '#4e534e', marginTop: '4px' }}>
           {skill.description}
         </p>
       </div>

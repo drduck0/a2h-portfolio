@@ -4,8 +4,25 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import {
+  PenTool,
+  Palette,
+  Sliders,
+  Layers,
+  Video,
+  Sparkles,
+} from 'lucide-react';
 import { ASSETS } from '../../../constants/assets';
-import { PERSONAL_INFO } from '../../../constants/portfolioData';
+import { PERSONAL_INFO, STATS, SOFTWARE_TOOLS } from '../../../constants/portfolioData';
+
+const ICONS_MAP = {
+  'pen-tool': PenTool,
+  palette: Palette,
+  sliders: Sliders,
+  layers: Layers,
+  video: Video,
+  sparkles: Sparkles,
+};
 
 interface HeroSectionProps {
   onOpenResume?: () => void;
@@ -36,18 +53,27 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
   const handleStartExperience = () => {
     setIsMobileMenuOpen(false);
-    const nextSection = document.getElementById('stats') || document.getElementById('about');
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.dispatchEvent(new CustomEvent('a2h-scroll-to-about'));
   };
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    setIsMobileMenuOpen(false);
+    if (targetId === '#about' || targetId === '#stats') {
+      window.dispatchEvent(new CustomEvent('a2h-scroll-to-about'));
+    } else {
+      window.dispatchEvent(new CustomEvent('a2h-nav-to', { detail: targetId }));
+    }
+  };
+
   return (
     <section className="hero a2h-hero" id="hero">
+      <span id="about" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
+      <span id="stats" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
       {/* 1. Full-Viewport Meadow Background (Same Meadow Scene Used in the Footer) */}
       <div className="a2h-hero__bg" aria-hidden="true">
         <video
@@ -66,11 +92,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
       {/* 2. Right Scroll-To-Play 3D Scene Rail */}
       <div className="a2h-hero__right-hud">
-        <a href="#stats" className="a2h-scroll-prompt">
-          <span>SCROLL TO PLAY</span>
-          <span>3D SCENE ↓</span>
-        </a>
-
         <div className="a2h-dot-rail" aria-hidden="true">
           <span className="a2h-dot-rail__menu">
             <span />
@@ -97,14 +118,14 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           <div className="a2h-glass-lip" aria-hidden="true" />
 
           {/* Main Frosted Glass Viewport Card */}
-          <div className="a2h-glass-card hero-content">
+          <div className="a2h-glass-card hero-content" id="heroGlassCard">
             {/* Inner Header Bar */}
             <div className="a2h-glass-header">
               <a
                 href="#hero"
                 className="a2h-glass-brand"
                 aria-label="A2H Home"
-                onClick={closeMobileMenu}
+                onClick={(e) => handleNavClick(e, '#hero')}
               >
                 <svg viewBox="0 0 30 22" width="24" height="18" aria-hidden="true">
                   <circle cx="4" cy="17" r="3.6" fill="currentColor" />
@@ -122,16 +143,32 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
               {/* Desktop / Tablet Inline Navigation */}
               <nav className="a2h-glass-nav" aria-label="Hero Navigation">
-                <a href="#about" className="a2h-glass-nav__link">
+                <a
+                  href="#about"
+                  className="a2h-glass-nav__link"
+                  onClick={(e) => handleNavClick(e, '#about')}
+                >
                   ABOUT
                 </a>
-                <a href="#work" className="a2h-glass-nav__link">
+                <a
+                  href="#work"
+                  className="a2h-glass-nav__link"
+                  onClick={(e) => handleNavClick(e, '#work')}
+                >
                   WORK
                 </a>
-                <a href="#service" className="a2h-glass-nav__link">
+                <a
+                  href="#service"
+                  className="a2h-glass-nav__link"
+                  onClick={(e) => handleNavClick(e, '#service')}
+                >
                   SERVICE
                 </a>
-                <a href="#contact" className="a2h-glass-nav__link">
+                <a
+                  href="#contact"
+                  className="a2h-glass-nav__link"
+                  onClick={(e) => handleNavClick(e, '#contact')}
+                >
                   CONTACT
                 </a>
               </nav>
@@ -156,57 +193,116 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                 <a
                   href="#about"
                   className="a2h-glass-mobile-menu__link"
-                  onClick={closeMobileMenu}
+                  onClick={(e) => handleNavClick(e, '#about')}
                 >
                   ABOUT
                 </a>
                 <a
                   href="#work"
                   className="a2h-glass-mobile-menu__link"
-                  onClick={closeMobileMenu}
+                  onClick={(e) => handleNavClick(e, '#work')}
                 >
                   WORK
                 </a>
                 <a
                   href="#service"
                   className="a2h-glass-mobile-menu__link"
-                  onClick={closeMobileMenu}
+                  onClick={(e) => handleNavClick(e, '#service')}
                 >
                   SERVICE
                 </a>
                 <a
                   href="#contact"
                   className="a2h-glass-mobile-menu__link"
-                  onClick={closeMobileMenu}
+                  onClick={(e) => handleNavClick(e, '#contact')}
                 >
                   CONTACT
                 </a>
               </nav>
             )}
 
-            {/* Inner Hero Copy & CTAs */}
-            <div className="a2h-glass-body">
-              <p className="a2h-glass-kicker hero-pill-role">
-                Designing Ideas. Creating Experiences.
-              </p>
+            {/* Morphing Stage: Hero Intro Copy -> 16:9 Expanded About Us Details */}
+            <div className="a2h-glass-stage">
+              {/* Layer 1: Inner Hero Copy & CTAs */}
+              <div className="a2h-glass-body" id="heroIntroBody">
+                <p className="a2h-glass-kicker hero-pill-role">
+                  Designing Ideas. Creating Experiences.
+                </p>
 
-              <h1 id="heroTitle" className="a2h-glass-title split">
-                Scroll-Triggered
-                <br />
-                3D Motion Portfolio
-              </h1>
+                <h1 id="heroTitle" className="a2h-glass-title split">
+                  Scroll-Triggered
+                  <br />
+                  3D Motion Portfolio
+                </h1>
 
-              <div className="a2h-glass-actions hero-actions">
-                <a href="#projects" className="a2h-btn-dark">
-                  EXPLORE PROJECTS
-                </a>
-                <button
-                  type="button"
-                  onClick={handleStartExperience}
-                  className="a2h-btn-light"
-                >
-                  START EXPERIENCE
-                </button>
+                <div className="a2h-glass-actions hero-actions">
+                  <a
+                    href="#projects"
+                    className="a2h-btn-dark"
+                    onClick={(e) => handleNavClick(e, '#projects')}
+                  >
+                    EXPLORE PROJECTS
+                  </a>
+                  <button
+                    type="button"
+                    onClick={handleStartExperience}
+                    className="a2h-btn-light"
+                  >
+                    START EXPERIENCE
+                  </button>
+                </div>
+              </div>
+
+              {/* Layer 2: Scroll-Revealed About Us Details inside 16:9 Glass Card */}
+              <div className="a2h-glass-about" id="heroAboutBody">
+                <span className="a2h-about-pill">About Me</span>
+
+                <h2 id="heroAboutTitle" className="a2h-about-title split">
+                  A Creative Designer Passionate About
+                  <br />
+                  <em>Digital Experiences.</em>
+                </h2>
+
+                <div className="a2h-about-narrative">
+                  <p className="a2h-about-para">
+                    Hi, I&apos;m <strong>{PERSONAL_INFO.name}</strong>, a UI/UX and Graphic
+                    Designer. I blend creativity with technology to build{' '}
+                    <strong>intuitive interfaces</strong>,{' '}
+                    <strong>compelling brand identities</strong>, and{' '}
+                    <strong>impactful digital content</strong>. For me, great design isn&apos;t just
+                    about how it looks—it&apos;s about <strong>clear communication</strong>,{' '}
+                    <strong>simplicity</strong>, and a <strong>seamless user experience</strong>.
+                  </p>
+                </div>
+
+                {/* 4 Stat Cards */}
+                <div className="a2h-about-stats">
+                  {STATS.map((stat, idx) => (
+                    <div
+                      key={idx}
+                      className="a2h-about-stat card"
+                      data-to={stat.target}
+                      data-dec={stat.decimals}
+                      data-suf={stat.suffix}
+                    >
+                      <span className="a2h-about-stat__label">{stat.label}</span>
+                      <b className="a2h-about-stat__val">{stat.initialText}</b>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Software Tools Chips */}
+                <div className="a2h-about-tools">
+                  {SOFTWARE_TOOLS.map((tool) => {
+                    const IconComp = ICONS_MAP[tool.icon];
+                    return (
+                      <span key={tool.name} className="a2h-about-tool-chip">
+                        <IconComp size={13} color={tool.color} />
+                        <span>{tool.name}</span>
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
@@ -315,7 +411,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           </ul>
 
           <p className="a2h-connect-dock__copy">
-            © 2026 A2H · Amarnath. All rights reserved. Built with{' '}
+            © 2026 A2H · Built with{' '}
             <span aria-label="love">💙</span> by{' '}
             <span className="a2h-connect-dock__author">
               <span className="a2h-connect-dock__avatar" aria-hidden="true">

@@ -43,20 +43,20 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
       </div>
 
       <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <div style={{ background: '#f5f8f0', padding: '16px 20px', borderRadius: '16px' }}>
-          <h4 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--olive)', textTransform: 'uppercase', marginBottom: '6px' }}>
+        <div style={{ background: '#f4f5f4', padding: '16px 20px', borderRadius: '16px' }}>
+          <h4 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase', marginBottom: '6px' }}>
             Professional Profile
           </h4>
-          <p style={{ fontSize: '13.5px', lineHeight: 1.55, color: '#2b361a' }}>
+          <p style={{ fontSize: '13.5px', lineHeight: 1.55, color: '#242824' }}>
             {PERSONAL_INFO.aboutP1} {PERSONAL_INFO.aboutP2}
           </p>
         </div>
 
         <div>
-          <h4 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--olive)', textTransform: 'uppercase', marginBottom: '10px' }}>
+          <h4 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase', marginBottom: '10px' }}>
             Core Competencies
           </h4>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', fontSize: '13px', color: '#33401d' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', fontSize: '13px', color: '#2a2e2a' }}>
             <div>• User Interface & Experience Design</div>
             <div>• Wireframing & Prototyping</div>
             <div>• Responsive Web & Mobile Design</div>

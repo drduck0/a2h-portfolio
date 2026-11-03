@@ -156,26 +156,77 @@ export function useScrollAnimations() {
 
       let isProgrammaticNav = false;
       let navTimeoutId: number | null = null;
+      let heroScrollTrigger: any = null;
+      let introTlRef: any = null;
 
-      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener('click', (e) => {
-          const targetId = anchor.getAttribute('href');
-          if (targetId && targetId !== '#') {
-            e.preventDefault();
-            isProgrammaticNav = true;
-            if (navTimeoutId) window.clearTimeout(navTimeoutId);
-            navTimeoutId = window.setTimeout(() => {
+      const ensureScrollReady = () => {
+        if (introTlRef && introTlRef.progress() < 1) {
+          introTlRef.progress(1);
+        }
+      };
+
+      const scrollToAboutReveal = () => {
+        ensureScrollReady();
+        isProgrammaticNav = true;
+        if (navTimeoutId) window.clearTimeout(navTimeoutId);
+        navTimeoutId = window.setTimeout(() => {
+          isProgrammaticNav = false;
+        }, 1700);
+
+        if (heroScrollTrigger) {
+          const targetY =
+            heroScrollTrigger.start +
+            (heroScrollTrigger.end - heroScrollTrigger.start) * 0.92;
+          lenisInstance?.scrollTo(targetY, {
+            duration: 1.5,
+            onComplete: () => {
               isProgrammaticNav = false;
-            }, 1700);
-            lenisInstance?.scrollTo(targetId, {
-              duration: 1.6,
-              onComplete: () => {
-                isProgrammaticNav = false;
-              },
-            });
-          }
+            },
+          });
+        }
+      };
+
+      const scrollToSection = (targetId: string) => {
+        if (!targetId || targetId === '#') return;
+        if (targetId === '#about' || targetId === '#stats') {
+          scrollToAboutReveal();
+          return;
+        }
+        ensureScrollReady();
+        isProgrammaticNav = true;
+        if (navTimeoutId) window.clearTimeout(navTimeoutId);
+        navTimeoutId = window.setTimeout(() => {
+          isProgrammaticNav = false;
+        }, 1700);
+        lenisInstance?.scrollTo(targetId === '#hero' ? 0 : targetId, {
+          duration: 1.5,
+          onComplete: () => {
+            isProgrammaticNav = false;
+          },
         });
-      });
+      };
+
+      const handleCustomNavTo = (e: Event) => {
+        const customEvent = e as CustomEvent<string>;
+        if (customEvent.detail) {
+          scrollToSection(customEvent.detail);
+        }
+      };
+
+      const handleDelegatedAnchorClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement | null;
+        const anchor = target?.closest<HTMLAnchorElement>('a[href^="#"]');
+        if (!anchor) return;
+        const targetId = anchor.getAttribute('href');
+        if (targetId && targetId !== '#') {
+          e.preventDefault();
+          scrollToSection(targetId);
+        }
+      };
+
+      window.addEventListener('a2h-scroll-to-about', scrollToAboutReveal);
+      window.addEventListener('a2h-nav-to', handleCustomNavTo);
+      document.addEventListener('click', handleDelegatedAnchorClick);
 
       // 5. INTRO Sequence
       lenisInstance.stop();
@@ -197,6 +248,7 @@ export function useScrollAnimations() {
       if (connectDock) gsap.set(connectDock, { opacity: 0, y: 20 });
       if (backdrop) gsap.set(backdrop, { opacity: 1 });
 
+      let scrollSetupDone = false;
       const introTl = gsap.timeline({
         delay: 0.2,
         onComplete: () => {
@@ -205,9 +257,13 @@ export function useScrollAnimations() {
           const remainingBackdrop = document.querySelector('.backdrop');
           if (remainingBackdrop) remainingBackdrop.remove();
           lenisInstance?.start();
-          setupScroll();
+          if (!scrollSetupDone) {
+            scrollSetupDone = true;
+            setupScroll();
+          }
         },
       });
+      introTlRef = introTl;
 
       introTl
         .fromTo(
@@ -268,14 +324,129 @@ export function useScrollAnimations() {
 
       // 6. setupScroll
       function setupScroll() {
-        // Scroll-Triggered 3D Scene on #hero (pinned forward camera dolly + 3D A2H transform)
+        // Counters helper for About Us stats
+        const cardElements = document.querySelectorAll<HTMLElement>('.card');
+        function setCounters(p: number) {
+          cardElements.forEach((card) => {
+            const to = parseFloat(card.getAttribute('data-to') || '0');
+            const dec = parseInt(card.getAttribute('data-dec') || '0', 10);
+            const suf = card.getAttribute('data-suf') || '';
+            const b = card.querySelector('b');
+            if (b) {
+              b.textContent = (to * p).toFixed(dec) + suf;
+            }
+          });
+        }
+
+        // Initial states for the About Us reveal layer inside the glass card
+        const aboutBody = document.getElementById('heroAboutBody');
+        const aboutPill = document.querySelector('.a2h-about-pill');
+        const aboutWords = document.querySelectorAll('#heroAboutTitle .w');
+        const aboutParas = document.querySelectorAll('.a2h-about-para');
+        const aboutStats = document.querySelectorAll('.a2h-about-stat');
+        const aboutTools = document.querySelectorAll('.a2h-about-tool-chip');
+
+        if (aboutBody) gsap.set(aboutBody, { autoAlpha: 0, pointerEvents: 'none' });
+        if (aboutPill) gsap.set(aboutPill, { opacity: 0, y: 16, filter: 'blur(6px)' });
+        if (aboutWords.length) gsap.set(aboutWords, { opacity: 0, y: 22, filter: 'blur(8px)' });
+        if (aboutParas.length) gsap.set(aboutParas, { opacity: 0, y: 18, filter: 'blur(6px)' });
+        if (aboutStats.length) {
+          gsap.set(aboutStats, { opacity: 0, y: 18, scale: 0.96, filter: 'blur(6px)' });
+        }
+        if (aboutTools.length) gsap.set(aboutTools, { opacity: 0, y: 12, filter: 'blur(4px)' });
+
+        // Compute responsive initial and expanded dimensions for the glass card
+        const getInitialCardMetrics = () => {
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          const introEl = document.getElementById('heroIntroBody');
+          const minIntroH = introEl ? introEl.scrollHeight + 70 : 256;
+          if (vw <= 768) {
+            return {
+              width: Math.round(vw * 0.92),
+              height: Math.round(Math.min(Math.max(minIntroH, 252), 276)),
+            };
+          }
+          if (vw <= 900) {
+            return {
+              width: Math.round(vw * 0.9),
+              height: Math.round(Math.max(minIntroH, Math.min(Math.max(vh * 0.38, 280), 345))),
+            };
+          }
+          return {
+            width: Math.round(Math.min(vw * 0.61, 920)),
+            height: Math.round(Math.max(minIntroH, Math.min(Math.max(vh * 0.42, 310), 410))),
+          };
+        };
+
+        const measureAboutNaturalHeight = (paddingExtra: number) => {
+          const aboutInner = document.getElementById('heroAboutBody');
+          if (!aboutInner) return 420;
+          const prevHeight = aboutInner.style.height;
+          const prevMinHeight = aboutInner.style.minHeight;
+          aboutInner.style.height = 'auto';
+          aboutInner.style.minHeight = '0';
+          const sh = aboutInner.scrollHeight;
+          aboutInner.style.height = prevHeight;
+          aboutInner.style.minHeight = prevMinHeight;
+          return sh + paddingExtra;
+        };
+
+        const getExpandedCardMetrics = () => {
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          const centerEl = document.querySelector<HTMLElement>('.a2h-hero__center');
+          const currentMarginTop = centerEl
+            ? parseFloat(window.getComputedStyle(centerEl).marginTop) || vh * 0.08
+            : vh * 0.08;
+
+          if (vw <= 768) {
+            const w = Math.round(vw * 0.92);
+            const naturalH = measureAboutNaturalHeight(74);
+            const h = Math.round(
+              Math.min(vh - 32, Math.max(naturalH, 385))
+            );
+            const desiredTop = Math.max(14, (vh - h) / 2);
+            return {
+              width: w,
+              height: h,
+              yOffset: Math.round(desiredTop - currentMarginTop),
+              riseYPercent: -4,
+            };
+          }
+
+          // Expansive 16:9 aspect ratio on desktop & tablet utilizing generous viewport space
+          const naturalH = measureAboutNaturalHeight(88);
+          const maxW = Math.min(vw * 0.92, 1380);
+          const maxH = Math.min(vh * 0.88, 776);
+          let w = maxW;
+          let h = w * (9 / 16);
+          if (h > maxH) {
+            h = maxH;
+            w = h * (16 / 9);
+          }
+          if (h < naturalH) {
+            h = Math.min(vh - 24, naturalH);
+            w = Math.min(vw * 0.94, Math.max(w, h * (16 / 9)));
+          }
+          const desiredTop = Math.max(14, (vh - h) / 2);
+          return {
+            width: Math.round(w),
+            height: Math.round(h),
+            yOffset: Math.round(desiredTop - currentMarginTop),
+            riseYPercent: -8,
+          };
+        };
+
+        // Scroll-Triggered 3D Scene on #hero -> 16:9 Glass Card Expansion & About Us Reveal
         const heroTl = gsap.timeline({
           scrollTrigger: {
             trigger: '#hero',
             start: 'top top',
-            end: '+=140%',
+            end: '+=240%',
             pin: true,
-            scrub: 0.6,
+            scrub: 0.65,
+            invalidateOnRefresh: true,
             onUpdate: (self: any) => {
               window.dispatchEvent(
                 new CustomEvent('a2h-hero-scroll', { detail: self.progress })
@@ -284,25 +455,228 @@ export function useScrollAnimations() {
           },
         });
 
+        heroScrollTrigger = heroTl.scrollTrigger;
+        const counterProxy = { p: 0 };
+
+        // Phase 1: Card rises to its height while meadow background dollies in
         heroTl
           .to(
             '.a2h-hero__bg',
             {
-              scale: 1.14,
-              yPercent: 4,
+              scale: 1.08,
+              yPercent: 2,
+              duration: 2.5,
               ease: 'none',
             },
             0
           )
+          .fromTo(
+            '.a2h-glass-stack',
+            {
+              yPercent: 0,
+              y: 0,
+              scale: 1,
+            },
+            {
+              yPercent: () => getExpandedCardMetrics().riseYPercent,
+              y: 0,
+              scale: 0.985,
+              duration: 2.5,
+              ease: 'power1.inOut',
+            },
+            0
+          )
+          // Phase 2: Hero words & bottom Connect dock fade out of view similarly
+          .to(
+            '.hero-pill-role',
+            {
+              opacity: 0,
+              y: -16,
+              filter: 'blur(8px)',
+              duration: 1.5,
+              ease: 'power2.in',
+            },
+            1.1
+          )
+          .to(
+            '#heroTitle .w',
+            {
+              opacity: 0,
+              y: -22,
+              filter: 'blur(8px)',
+              stagger: 0.04,
+              duration: 1.5,
+              ease: 'power2.in',
+            },
+            1.2
+          )
+          .to(
+            '.hero-actions',
+            {
+              opacity: 0,
+              y: -16,
+              filter: 'blur(8px)',
+              duration: 1.4,
+              ease: 'power2.in',
+            },
+            1.4
+          )
+          .to(
+            '.a2h-connect-dock',
+            {
+              opacity: 0,
+              y: 24,
+              filter: 'blur(8px)',
+              duration: 1.7,
+              ease: 'power2.in',
+            },
+            1.2
+          )
+          .to(
+            '#heroIntroBody',
+            {
+              autoAlpha: 0,
+              pointerEvents: 'none',
+              duration: 0.2,
+            },
+            3.1
+          )
+          // Phase 3: After reaching the height, smoothly expand the glass card to 16:9
+          .to(
+            '.a2h-hero__bg',
+            {
+              scale: 1.16,
+              yPercent: 4,
+              duration: 6.5,
+              ease: 'none',
+            },
+            2.5
+          )
+          .fromTo(
+            '.a2h-hero__center',
+            {
+              width: () => getInitialCardMetrics().width,
+            },
+            {
+              width: () => getExpandedCardMetrics().width,
+              duration: 3.4,
+              ease: 'power2.inOut',
+              immediateRender: true,
+            },
+            2.7
+          )
+          .fromTo(
+            '#heroGlassCard',
+            {
+              height: () => getInitialCardMetrics().height,
+              minHeight: () => getInitialCardMetrics().height,
+              background:
+                'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(250, 252, 248, 0.44) 55%, rgba(244, 247, 240, 0.56) 100%)',
+            },
+            {
+              height: () => getExpandedCardMetrics().height,
+              minHeight: () => getExpandedCardMetrics().height,
+              background:
+                'linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(248, 251, 245, 0.64) 55%, rgba(242, 246, 238, 0.72) 100%)',
+              duration: 3.4,
+              ease: 'power2.inOut',
+              immediateRender: true,
+            },
+            2.7
+          )
           .to(
             '.a2h-glass-stack',
             {
-              yPercent: -14,
-              scale: 0.97,
-              ease: 'none',
+              yPercent: 0,
+              y: () => getExpandedCardMetrics().yOffset,
+              scale: 1,
+              duration: 3.4,
+              ease: 'power2.inOut',
             },
-            0
-          );
+            2.7
+          )
+          // Phase 4: Animate words & reveal About Us details inside the 16:9 card
+          .to(
+            '#heroAboutBody',
+            {
+              autoAlpha: 1,
+              pointerEvents: 'auto',
+              duration: 0.2,
+            },
+            5.2
+          )
+          .to(
+            '.a2h-about-pill',
+            {
+              opacity: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              duration: 1.0,
+              ease: 'power3.out',
+            },
+            5.3
+          )
+          .to(
+            '#heroAboutTitle .w',
+            {
+              opacity: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              stagger: 0.045,
+              duration: 1.4,
+              ease: 'power3.out',
+            },
+            5.5
+          )
+          .to(
+            '.a2h-about-para',
+            {
+              opacity: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              stagger: 0.16,
+              duration: 1.3,
+              ease: 'power3.out',
+            },
+            6.2
+          )
+          .to(
+            '.a2h-about-stat',
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              filter: 'blur(0px)',
+              stagger: 0.08,
+              duration: 1.2,
+              ease: 'power3.out',
+            },
+            6.7
+          )
+          .to(
+            counterProxy,
+            {
+              p: 1,
+              duration: 2.0,
+              ease: 'power2.out',
+              onUpdate: () => setCounters(counterProxy.p),
+            },
+            6.7
+          )
+          .to(
+            '.a2h-about-tool-chip',
+            {
+              opacity: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              stagger: 0.05,
+              duration: 1.0,
+              ease: 'power3.out',
+            },
+            7.2
+          )
+          // Hold buffer at the end of the 16:9 About Us reveal
+          .to({}, { duration: 1.0 }, 9.0);
 
         // Reveal elements
         document.querySelectorAll('.reveal').forEach((el) => {
@@ -320,7 +694,6 @@ export function useScrollAnimations() {
 
         // Word reveal for .split in sections
         [
-          '#stats .split',
           '#loop .split',
           '#cta .split',
           '#expertise .split',
@@ -343,106 +716,6 @@ export function useScrollAnimations() {
               });
             }
           });
-        });
-
-        // Counters function
-        const cardElements = document.querySelectorAll<HTMLElement>('.card');
-        function setCounters(p: number) {
-          cardElements.forEach((card) => {
-            const to = parseFloat(card.getAttribute('data-to') || '0');
-            const dec = parseInt(card.getAttribute('data-dec') || '0', 10);
-            const suf = card.getAttribute('data-suf') || '';
-            const b = card.querySelector('b');
-            if (b) {
-              b.textContent = (to * p).toFixed(dec) + suf;
-            }
-          });
-        }
-
-        // MatchMedia triggers
-        const mm = gsap.matchMedia();
-
-        // Desktop stats & loop
-        mm.add('(min-width: 901px)', () => {
-          gsap.from('.card', {
-            y: 40,
-            opacity: 0,
-            stagger: 0.08,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: '.cards',
-              start: 'top 75%',
-            },
-          });
-
-          const statsTl = gsap.timeline({
-            scrollTrigger: {
-              trigger: '#stats',
-              start: 'top top',
-              end: '+=110%',
-              pin: true,
-              scrub: 1,
-            },
-          });
-
-          const proxy = { p: 0 };
-          statsTl.to(
-            proxy,
-            {
-              p: 1,
-              ease: 'none',
-              onUpdate: () => setCounters(proxy.p),
-            },
-            0
-          );
-
-          statsTl.fromTo(
-            '#tree',
-            { yPercent: 75 },
-            { yPercent: 6, ease: 'none' },
-            0
-          );
-        });
-
-        // Mobile / Tablet stats
-        mm.add('(max-width: 900px)', () => {
-          gsap.from('.card', {
-            y: 30,
-            opacity: 0,
-            stagger: 0.08,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: '.cards',
-              start: 'top 85%',
-            },
-          });
-
-          const proxy = { p: 0 };
-          gsap.to(proxy, {
-            p: 1,
-            duration: 2,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: '.cards',
-              start: 'top 80%',
-            },
-            onUpdate: () => setCounters(proxy.p),
-          });
-
-          gsap.fromTo(
-            '#tree',
-            { yPercent: 40 },
-            {
-              yPercent: 0,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: '#stats',
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true,
-              },
-            }
-          );
         });
 
         // Contact Cards Stagger Animation

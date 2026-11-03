@@ -32,16 +32,12 @@ export const AboutSection: React.FC = () => {
 
         <div className="about-narrative reveal">
           <p>
-            Hi, I'm <strong>{PERSONAL_INFO.name}</strong>, a UI/UX and Graphic Designer passionate about
-            creating meaningful visual experiences. I specialize in designing{' '}
-            <strong>user-friendly interfaces</strong>, <strong>creative graphics</strong>,
-            promotional materials, branding, and digital content.
-          </p>
-          <p style={{ marginTop: '12px' }}>
-            I enjoy combining creativity with technology to transform ideas into impactful
-            designs. I believe great design is not just about appearance; it's about{' '}
-            <strong>communication</strong>, <strong>simplicity</strong>, and{' '}
-            <strong>user experience</strong>.
+            Hi, I&apos;m <strong>{PERSONAL_INFO.name}</strong>, a UI/UX and Graphic Designer. I
+            blend creativity with technology to build <strong>intuitive interfaces</strong>,{' '}
+            <strong>compelling brand identities</strong>, and{' '}
+            <strong>impactful digital content</strong>. For me, great design isn&apos;t just about
+            how it looks—it&apos;s about <strong>clear communication</strong>,{' '}
+            <strong>simplicity</strong>, and a <strong>seamless user experience</strong>.
           </p>
         </div>
 

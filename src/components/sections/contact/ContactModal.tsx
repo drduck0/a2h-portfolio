@@ -49,17 +49,17 @@ export const ContactModal: React.FC<ContactModalProps> = ({
       <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--ink)', marginTop: '6px' }}>
         Send a Message to Amarnath
       </h2>
-      <p style={{ fontSize: '13.5px', color: '#566048', marginBottom: '20px' }}>
+      <p style={{ fontSize: '13.5px', color: '#505550', marginBottom: '20px' }}>
         Have a project in mind, need design consultations, or want to explore collaboration?
       </p>
 
       {submitted ? (
-        <div style={{ textAlign: 'center', padding: '36px 20px', background: '#f4f8ed', borderRadius: '18px' }}>
-          <CheckCircle2 size={42} color="var(--olive)" style={{ margin: '0 auto 12px' }} />
+        <div style={{ textAlign: 'center', padding: '36px 20px', background: '#f4f5f4', borderRadius: '18px' }}>
+          <CheckCircle2 size={42} color="var(--ink)" style={{ margin: '0 auto 12px' }} />
           <h3 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
             Thank you! Message Received.
           </h3>
-          <p style={{ fontSize: '14px', color: '#404c2c', marginBottom: '18px' }}>
+          <p style={{ fontSize: '14px', color: '#363b36', marginBottom: '18px' }}>
             I will review your message and reply back shortly to <strong>{formData.email}</strong>.
           </p>
           <button onClick={handleResetAndClose} className="btn">
@@ -69,7 +69,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
       ) : (
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#354020', marginBottom: '5px' }}>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#262a26', marginBottom: '5px' }}>
               Your Name
             </label>
             <input
@@ -82,7 +82,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#354020', marginBottom: '5px' }}>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#262a26', marginBottom: '5px' }}>
               Email Address
             </label>
             <input
@@ -96,7 +96,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#354020', marginBottom: '5px' }}>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#262a26', marginBottom: '5px' }}>
               Project Type
             </label>
             <select
@@ -113,7 +113,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#354020', marginBottom: '5px' }}>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#262a26', marginBottom: '5px' }}>
               Project Details
             </label>
             <textarea

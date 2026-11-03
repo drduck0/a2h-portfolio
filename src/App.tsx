@@ -9,7 +9,6 @@ import { useClipboard } from './hooks/useClipboard';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { HeroSection } from './components/sections/hero/HeroSection';
-import { AboutSection } from './components/sections/about/AboutSection';
 import { ExpertiseSection } from './components/sections/expertise/ExpertiseSection';
 import { ProjectsSection } from './components/sections/projects/ProjectsSection';
 import { ContactSection } from './components/sections/contact/ContactSection';
@@ -36,14 +35,11 @@ export default function App() {
         />
 
         <main>
-          {/* Mainframe-Inspired Hero Section */}
+          {/* Mainframe-Inspired Hero Section (Expands to 16:9 on scroll to reveal About Us) */}
           <HeroSection
             onOpenResume={() => setShowResumeModal(true)}
             onOpenContact={() => setShowContactModal(true)}
           />
-
-          {/* About Me & Stats with Cherry Tree & Software Tools */}
-          <AboutSection />
 
           {/* Core Capabilities & Expertise */}
           <ExpertiseSection />

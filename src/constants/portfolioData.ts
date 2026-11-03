@@ -18,8 +18,8 @@ export const PERSONAL_INFO = {
   title: 'Turning Creative Ideas Into Meaningful Digital Experiences.',
   bio: 'I transform ideas into visually engaging designs and user-friendly digital experiences through creativity, design thinking, and modern technology.',
   aboutHeadline: 'A Creative Designer Passionate About Digital Experiences.',
-  aboutP1: `Hi, I'm Amarnath, a UI/UX and Graphic Designer passionate about creating meaningful visual experiences. I specialize in designing user-friendly interfaces, creative graphics, promotional materials, branding, and digital content.`,
-  aboutP2: `I enjoy combining creativity with technology to transform ideas into impactful designs. I believe great design is not just about appearance; it's about communication, simplicity, and user experience.`,
+  aboutP1: `Hi, I'm Amarnath, a UI/UX and Graphic Designer. I blend creativity with technology to build intuitive interfaces, compelling brand identities, and impactful digital content. For me, great design isn't just about how it looks—it's about clear communication, simplicity, and a seamless user experience.`,
+  aboutP2: '',
   email: 'anandsivanandam03@gmail.com',
   phone: '+91 93608 07505',
   location: 'Chennai, Tamil Nadu, India',
@@ -63,7 +63,7 @@ export const STATS: StatItem[] = [
 ];
 
 export const SOFTWARE_TOOLS: SoftwareTool[] = [
-  { name: 'Figma', color: '#4d6a10', icon: 'pen-tool' },
+  { name: 'Figma', color: '#0b0d0b', icon: 'pen-tool' },
   { name: 'Adobe Photoshop', color: '#31a8ff', icon: 'palette' },
   { name: 'Adobe Illustrator', color: '#ff9a00', icon: 'sliders' },
   { name: 'Adobe InDesign', color: '#ff3366', icon: 'layers' },
@@ -128,8 +128,8 @@ export const PROJECTS: Project[] = [
       'Streamlined user flows for registering, tracking live matches, and sharing gameplay highlights.',
     ],
     tools: ['Figma', 'Prototyping', 'Design Systems', 'Mobile UX'],
-    color: '#4d6a10',
-    gradient: 'linear-gradient(135deg, #1b2608 0%, #3f580c 100%)',
+    color: '#141714',
+    gradient: 'linear-gradient(135deg, #0d100d 0%, #242924 100%)',
   },
   {
     id: 'marvel-website',
