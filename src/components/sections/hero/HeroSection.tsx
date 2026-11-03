@@ -54,6 +54,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           id="heroVideo"
           className="a2h-hero__video"
           src={ASSETS.MEADOW_VIDEO}
+          poster={ASSETS.HERO_POSTER}
           autoPlay
           muted
           loop

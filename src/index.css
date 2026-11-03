@@ -201,8 +201,7 @@ a {
   position: fixed;
   inset: -60px;
   z-index: 0;
-  background:
-    radial-gradient(ellipse at 50% 115%, #3d630d 0%, #5e8f17 32%, #85be26 56%, #b5d9f7 78%, #80b5e8 100%);
+  background: url("/assets/hero-meadow-poster.webp") center bottom / cover no-repeat;
   filter: blur(28px) saturate(1.2) brightness(0.96);
   -webkit-filter: blur(28px) saturate(1.2) brightness(0.96);
   transform: scale(1.08);
@@ -249,7 +248,7 @@ section.hero,
   height: 100svh;
   min-height: 700px;
   overflow: hidden;
-  background: #87b8e6;
+  background: #87b8e6 url("/assets/hero-meadow-poster.webp") center bottom / cover no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -263,6 +262,7 @@ section.hero,
   z-index: 1;
   pointer-events: none;
   overflow: hidden;
+  background: url("/assets/hero-meadow-poster.webp") center bottom / cover no-repeat;
 }
 
 .a2h-hero__video {
