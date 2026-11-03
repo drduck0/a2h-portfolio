@@ -76,14 +76,11 @@ export const Navbar: React.FC<NavbarProps> = () => {
           <a className="nav-link" href="#about">
             About
           </a>
-          <a className="nav-link" href="#expertise">
-            Expertise
+          <a className="nav-link" href="#work">
+            Work
           </a>
-          <a className="nav-link" href="#projects">
-            Projects
-          </a>
-          <a className="nav-link" href="#process">
-            Process
+          <a className="nav-link" href="#service">
+            Service
           </a>
           <a className="nav-link" href="#contact">
             Contact
@@ -109,14 +106,11 @@ export const Navbar: React.FC<NavbarProps> = () => {
               <a className="mobile-nav-link" href="#about" onClick={handleNavClick}>
                 About
               </a>
-              <a className="mobile-nav-link" href="#expertise" onClick={handleNavClick}>
-                Expertise
+              <a className="mobile-nav-link" href="#work" onClick={handleNavClick}>
+                Work
               </a>
-              <a className="mobile-nav-link" href="#projects" onClick={handleNavClick}>
-                Projects
-              </a>
-              <a className="mobile-nav-link" href="#process" onClick={handleNavClick}>
-                Process
+              <a className="mobile-nav-link" href="#service" onClick={handleNavClick}>
+                Service
               </a>
               <a className="mobile-nav-link" href="#contact" onClick={handleNavClick}>
                 Contact

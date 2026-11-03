@@ -22,7 +22,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
     filter === 'all' ? PROJECTS : PROJECTS.filter((p) => p.type === filter);
 
   return (
-    <section className="projects" id="projects">
+    <section className="projects" id="projects" data-section="work">
+      <span id="work" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
       <div className="projects-container">
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
           <Pill reveal>Featured Projects</Pill>

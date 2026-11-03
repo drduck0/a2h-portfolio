@@ -1,6 +1,6 @@
 {
-  "name": "Snail & Nail — Haute Parfumerie",
-  "description": "An intimate, cinematic scroll-driven olfactory experience for Snail & Nail artisanal fragrances.",
+  "name": "A2H — Creative & 3D Motion Portfolio",
+  "description": "Interactive scroll-triggered 3D motion portfolio for Amarnath (A2H), showcasing UI/UX design, creative graphics, and digital experiences.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

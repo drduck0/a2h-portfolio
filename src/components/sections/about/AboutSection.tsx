@@ -13,6 +13,7 @@ import { PERSONAL_INFO, STATS } from '../../../constants/portfolioData';
 export const AboutSection: React.FC = () => {
   return (
     <section className="stats" id="stats">
+      <span id="about" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
       <div className="sq-field" data-count="22" />
 
       {/* Rising Cherry Tree */}
@@ -20,7 +21,7 @@ export const AboutSection: React.FC = () => {
         <img id="tree" className="tree" src={ASSETS.TREE} alt="Cherry blossom trees" />
       </div>
 
-      <div className="stats-inner" id="about">
+      <div className="stats-inner">
         <Pill reveal>About Me</Pill>
 
         <h2 className="h2 split">

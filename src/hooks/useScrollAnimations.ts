@@ -186,6 +186,7 @@ export function useScrollAnimations() {
       const heroActions = document.querySelector('.hero-actions');
       const rightHud = document.querySelector('.a2h-hero__right-hud');
       const connectDock = document.querySelector('.a2h-connect-dock');
+      const backdrop = document.querySelector('.backdrop');
 
       gsap.set(heroWords, { opacity: 0, y: 20, filter: 'blur(8px)' });
       if (nav) gsap.set(nav, { opacity: 0, y: -16 });
@@ -194,14 +195,15 @@ export function useScrollAnimations() {
       if (heroActions) gsap.set(heroActions, { opacity: 0, y: 14 });
       if (rightHud) gsap.set(rightHud, { opacity: 0, x: 18 });
       if (connectDock) gsap.set(connectDock, { opacity: 0, y: 20 });
+      if (backdrop) gsap.set(backdrop, { opacity: 1 });
 
       const introTl = gsap.timeline({
         delay: 0.2,
         onComplete: () => {
           document.body.classList.remove('intro');
           gsap.set('#app', { clearProps: 'all' });
-          const backdrop = document.querySelector('.backdrop');
-          if (backdrop) backdrop.remove();
+          const remainingBackdrop = document.querySelector('.backdrop');
+          if (remainingBackdrop) remainingBackdrop.remove();
           lenisInstance?.start();
           setupScroll();
         },
@@ -212,7 +214,24 @@ export function useScrollAnimations() {
           '#app',
           { scale: 0.9, borderRadius: 28 },
           { scale: 1, borderRadius: 0, duration: 1.35, ease: 'expo.inOut' }
-        )
+        );
+
+      if (backdrop) {
+        introTl.to(
+          backdrop,
+          {
+            opacity: 0,
+            duration: 0.55,
+            ease: 'power2.out',
+            onComplete: () => {
+              (backdrop as HTMLElement).remove();
+            },
+          },
+          '-=0.5'
+        );
+      }
+
+      introTl
         .to(
           glassStack,
           { opacity: 1, y: 0, scale: 1, duration: 0.95, ease: 'power3.out' },

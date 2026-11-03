@@ -10,7 +10,9 @@ import { SKILL_CATEGORIES } from '../../../constants/portfolioData';
 
 export const ExpertiseSection: React.FC = () => {
   return (
-    <section className="expertise" id="expertise">
+    <section className="expertise" id="expertise" data-section="service">
+      <span id="service" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
+      <span id="services" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
       <div className="expertise-container">
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
           <Pill reveal>My Expertise</Pill>

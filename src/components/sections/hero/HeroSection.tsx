@@ -87,21 +87,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           </div>
         </div>
 
-        <div className="a2h-Viewfinder-icon" aria-hidden="true">
-          <svg
-            viewBox="0 0 20 20"
-            width="16"
-            height="16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.4"
-          >
-            <path d="M3 7V4a1 1 0 0 1 1-1h3" />
-            <path d="M13 3h3a1 1 0 0 1 1 1v3" />
-            <path d="M17 13v3a1 1 0 0 1-1 1h-3" />
-            <path d="M7 17H4a1 1 0 0 1-1-1v-3" />
-          </svg>
-        </div>
       </div>
 
       {/* 3. Center Stage: Frosted Glass Navigation & Hero Panel */}
@@ -136,17 +121,17 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
               {/* Desktop / Tablet Inline Navigation */}
               <nav className="a2h-glass-nav" aria-label="Hero Navigation">
-                <a href="#projects" className="a2h-glass-nav__link">
-                  WORK
-                </a>
-                <a href="#stats" className="a2h-glass-nav__link">
+                <a href="#about" className="a2h-glass-nav__link">
                   ABOUT
                 </a>
-                <a href="#contact" className="a2h-glass-nav__link">
-                  CONNECT
+                <a href="#work" className="a2h-glass-nav__link">
+                  WORK
                 </a>
-                <a href="#expertise" className="a2h-glass-nav__link">
-                  SERVICES
+                <a href="#service" className="a2h-glass-nav__link">
+                  SERVICE
+                </a>
+                <a href="#contact" className="a2h-glass-nav__link">
+                  CONTACT
                 </a>
               </nav>
 
@@ -168,32 +153,32 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             {isMobileMenuOpen && (
               <nav className="a2h-glass-mobile-menu" aria-label="Mobile Hero Navigation">
                 <a
-                  href="#projects"
-                  className="a2h-glass-mobile-menu__link"
-                  onClick={closeMobileMenu}
-                >
-                  WORK
-                </a>
-                <a
-                  href="#stats"
+                  href="#about"
                   className="a2h-glass-mobile-menu__link"
                   onClick={closeMobileMenu}
                 >
                   ABOUT
                 </a>
                 <a
+                  href="#work"
+                  className="a2h-glass-mobile-menu__link"
+                  onClick={closeMobileMenu}
+                >
+                  WORK
+                </a>
+                <a
+                  href="#service"
+                  className="a2h-glass-mobile-menu__link"
+                  onClick={closeMobileMenu}
+                >
+                  SERVICE
+                </a>
+                <a
                   href="#contact"
                   className="a2h-glass-mobile-menu__link"
                   onClick={closeMobileMenu}
                 >
-                  CONNECT
-                </a>
-                <a
-                  href="#expertise"
-                  className="a2h-glass-mobile-menu__link"
-                  onClick={closeMobileMenu}
-                >
-                  SERVICES
+                  CONTACT
                 </a>
               </nav>
             )}
