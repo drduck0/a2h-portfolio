@@ -1490,21 +1490,23 @@ section#projects {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 11.5px;
+  font-family: var(--font);
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-transform: none;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
 
 .sf-work-topbar__sep {
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
 .sf-work-topbar__count {
-  color: #464b46;
+  color: #555b55;
   font-weight: 600;
+  font-size: 12px;
 }
 
 .sf-work-topbar__controls {
@@ -1514,15 +1516,16 @@ section#projects {
 }
 
 .sf-filter-tab {
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
   border: 1px solid transparent;
   background: transparent;
   color: #4d534d;
-  font-size: 11px;
+  font-family: var(--font);
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  text-transform: none;
   cursor: pointer;
   white-space: nowrap;
   transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
@@ -1536,8 +1539,8 @@ section#projects {
 .sf-filter-tab.is-active {
   color: var(--ink);
   background: #ffffff;
-  border-color: rgba(11, 13, 11, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-color: rgba(11, 13, 11, 0.12);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Main 2-Column Split Stage */
@@ -1597,16 +1600,17 @@ section#projects {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  font-size: 11.5px;
+  font-family: var(--font);
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  text-transform: none;
   font-variant-numeric: tabular-nums;
   will-change: transform, opacity;
 }
 
 .sf-text-card--dark .sf-text-card__kicker {
-  color: rgba(242, 244, 242, 0.62);
+  color: rgba(242, 244, 242, 0.65);
 }
 
 .sf-text-card--light .sf-text-card__kicker {
@@ -1627,10 +1631,10 @@ section#projects {
 
 .sf-text-card__headline {
   font-family: var(--font);
-  font-size: clamp(32px, 4.15vw, 62px);
-  font-weight: 500;
-  letter-spacing: -0.036em;
-  line-height: 1.06;
+  font-size: clamp(30px, 3.8vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -3002,21 +3006,23 @@ section#process {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 11.5px;
+  font-family: var(--font);
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-transform: none;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
 
 .sf-proc-topbar__sep {
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
 .sf-proc-topbar__count {
-  color: #464b46;
+  color: #555b55;
   font-weight: 600;
+  font-size: 12px;
 }
 
 .sf-proc-topbar__steps {
@@ -3029,15 +3035,16 @@ section#process {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 9px;
-  border-radius: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
   border: 1px solid transparent;
   background: transparent;
   color: #4d534d;
-  font-size: 10.5px;
+  font-family: var(--font);
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  text-transform: none;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
   white-space: nowrap;
@@ -3051,12 +3058,12 @@ section#process {
 
 .sf-proc-step-btn.is-active {
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(11, 13, 11, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(11, 13, 11, 0.12);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* 1. Centered Intro Headline ("Not every idea / starts in focus.") */
+/* 1. Centered Intro Headline ("Not Every Idea / Starts In Focus.") */
 .sf-proc-intro {
   position: absolute;
   left: 50%;
@@ -3072,25 +3079,23 @@ section#process {
   will-change: transform, opacity;
 }
 
-.sf-proc-intro__kicker {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #545a54;
-}
-
 .sf-proc-intro__headline {
   font-family: var(--font);
-  font-size: clamp(34px, 5vw, 68px);
-  font-weight: 500;
-  letter-spacing: -0.036em;
-  line-height: 1.05;
+  font-size: clamp(32px, 4.2vw, 60px);
+  font-weight: 700;
+  letter-spacing: -0.032em;
+  line-height: 1.1;
   color: var(--ink);
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.sf-proc-intro__headline em {
+  font-style: normal;
+  color: #3a3f3a;
+  font-weight: 700;
 }
 
 /* 2. Spatial Diagonal Card Stream */
@@ -3137,16 +3142,17 @@ section#process {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 11px;
+  padding: 5px 12px;
   border-radius: 999px;
-  background: rgba(14, 17, 14, 0.56);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(14, 17, 14, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  font-size: 10px;
+  font-family: var(--font);
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.95);
   font-variant-numeric: tabular-nums;
   pointer-events: none;
 }
@@ -3159,27 +3165,27 @@ section#process {
   z-index: 15;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-width: 560px;
+  gap: 12px;
+  max-width: 600px;
   pointer-events: none;
   opacity: 0;
   will-change: transform, opacity;
 }
 
 .sf-proc-card__full-kicker {
-  font-size: 10.5px;
+  font-family: var(--font);
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(242, 244, 242, 0.78);
+  letter-spacing: -0.01em;
+  color: rgba(242, 244, 242, 0.85);
 }
 
 .sf-proc-card__full-title {
   font-family: var(--font);
-  font-size: clamp(32px, 4.6vw, 64px);
-  font-weight: 500;
-  letter-spacing: -0.036em;
-  line-height: 1.04;
+  font-size: clamp(30px, 4.2vw, 58px);
+  font-weight: 700;
+  letter-spacing: -0.032em;
+  line-height: 1.08;
   color: #ffffff;
   margin: 0;
   display: flex;
@@ -3214,20 +3220,20 @@ section#process {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 10.5px;
+  font-family: var(--font);
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
   color: #545a54;
   font-variant-numeric: tabular-nums;
 }
 
 .sf-proc-editorial__headline {
   font-family: var(--font);
-  font-size: clamp(26px, 2.75vw, 42px);
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.08;
+  font-size: clamp(26px, 2.6vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.12;
   color: var(--ink);
   margin: 0;
   display: flex;
@@ -3235,8 +3241,9 @@ section#process {
 }
 
 .sf-proc-editorial__desc {
+  font-family: var(--font);
   font-size: clamp(13px, 1.02vw, 14.5px);
-  line-height: 1.58;
+  line-height: 1.6;
   color: #3c423c;
   margin: 0;
 }

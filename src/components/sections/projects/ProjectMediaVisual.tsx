@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { ASSETS } from '../../../constants/assets';
 import { Project } from '../../../types/portfolio';
 
 interface ProjectMediaVisualProps {
@@ -16,53 +17,70 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
   project,
   onSelect,
 }) => {
+  const renderBackdrop = (variant: string) => (
+    <div className={`sf-meadow-backdrop sf-meadow-backdrop--${variant}`} aria-hidden="true">
+      <img
+        src={ASSETS.HERO_POSTER}
+        alt=""
+        className="sf-meadow-backdrop__img"
+        referrerPolicy="no-referrer"
+      />
+      <div className="sf-meadow-backdrop__sky-veil" />
+      <img
+        src={variant === 'marvel' || variant === 'hospital' ? ASSETS.CLOUD_A : ASSETS.CLOUD_B}
+        alt=""
+        className="sf-meadow-backdrop__cloud"
+        referrerPolicy="no-referrer"
+      />
+      <div className="sf-meadow-backdrop__gloss-sheen" />
+    </div>
+  );
+
   const renderArtwork = () => {
     switch (project.id) {
       case 'gamers-garage':
         return (
           <div className="sf-media-scene sf-media-scene--gamers">
-            <div className="sf-media-scene__sky" />
-            <div className="sf-media-scene__beams" />
-            <div className="sf-media-scene__grid" />
+            {renderBackdrop('gamers')}
 
             <div className="sf-mockup-stage">
               <div className="sf-phone sf-phone--primary">
                 <div className="sf-phone__notch" />
                 <div className="sf-phone__header">
-                  <span className="sf-phone__tag">LIVE TOURNAMENT · S04</span>
-                  <span className="sf-phone__score">24 SQUADS</span>
+                  <span className="sf-phone__tag">Live Tournament · S04</span>
+                  <span className="sf-phone__score">24 Squads</span>
                 </div>
                 <div className="sf-phone__hero-card">
-                  <span className="sf-phone__kicker">FINALS BRACKET</span>
+                  <span className="sf-phone__kicker">Finals Bracket</span>
                   <h4>Apex Arena Championship</h4>
                   <div className="sf-phone__match-bar">
-                    <span>TEAM VORTEX</span>
+                    <span>Team Vortex</span>
                     <strong>14 : 11</strong>
-                    <span>NOVA CORE</span>
+                    <span>Nova Core</span>
                   </div>
                 </div>
                 <div className="sf-phone__stats-row">
                   <div className="sf-phone__stat-box">
-                    <span>WIN RATE</span>
+                    <span>Win Rate</span>
                     <strong>84.2%</strong>
                   </div>
                   <div className="sf-phone__stat-box">
-                    <span>PING</span>
+                    <span>Ping</span>
                     <strong>12 ms</strong>
                   </div>
                   <div className="sf-phone__stat-box">
-                    <span>RANK</span>
+                    <span>Rank</span>
                     <strong>#01</strong>
                   </div>
                 </div>
                 <div className="sf-phone__list">
                   <div className="sf-phone__list-item">
                     <span>01 · Matchmaking Lobby</span>
-                    <span>READY</span>
+                    <span>Ready</span>
                   </div>
                   <div className="sf-phone__list-item">
-                    <span>02 · Voice Telemetry</span>
-                    <span>ACTIVE</span>
+                    <span>02 · Voice Party Hub</span>
+                    <span>Active</span>
                   </div>
                 </div>
               </div>
@@ -70,34 +88,34 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
               <div className="sf-phone sf-phone--secondary">
                 <div className="sf-phone__notch" />
                 <div className="sf-phone__header">
-                  <span className="sf-phone__tag">PLAYER PROFILE</span>
-                  <span className="sf-phone__score">PRO TIER</span>
+                  <span className="sf-phone__tag">Player Profile</span>
+                  <span className="sf-phone__score">Pro Tier</span>
                 </div>
                 <div className="sf-phone__radar">
                   <svg viewBox="0 0 120 120" className="sf-radar-svg" aria-hidden="true">
                     <polygon
                       points="60,12 104,38 92,94 28,94 16,38"
                       fill="none"
-                      stroke="rgba(242,244,242,0.22)"
+                      stroke="rgba(11,13,11,0.18)"
                       strokeWidth="1"
                     />
                     <polygon
                       points="60,28 88,46 80,82 40,82 32,46"
                       fill="none"
-                      stroke="rgba(242,244,242,0.16)"
+                      stroke="rgba(11,13,11,0.12)"
                       strokeWidth="1"
                     />
                     <polygon
                       points="60,18 96,42 84,88 38,78 24,42"
-                      fill="rgba(212,235,190,0.22)"
-                      stroke="#d4ebbe"
-                      strokeWidth="1.6"
+                      fill="rgba(77,106,16,0.18)"
+                      stroke="#2a3410"
+                      strokeWidth="1.8"
                     />
                   </svg>
                 </div>
                 <div className="sf-phone__footer-bar">
-                  <span>SQUAD ROSTER</span>
-                  <strong>4 / 4 ONLINE</strong>
+                  <span>Squad Roster</span>
+                  <strong>4 / 4 Online</strong>
                 </div>
               </div>
             </div>
@@ -107,9 +125,7 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
       case 'marvel-website':
         return (
           <div className="sf-media-scene sf-media-scene--marvel">
-            <div className="sf-media-scene__sky" />
-            <div className="sf-media-scene__beams" />
-            <div className="sf-media-scene__grid" />
+            {renderBackdrop('marvel')}
 
             <div className="sf-mockup-stage">
               <div className="sf-browser">
@@ -120,37 +136,37 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
                     <span />
                   </div>
                   <span className="sf-browser__url">marvel.editorial.experience</span>
-                  <span className="sf-browser__vp">1440 PX</span>
+                  <span className="sf-browser__vp">1440 px</span>
                 </div>
 
                 <div className="sf-browser__body">
                   <div className="sf-browser__hero">
                     <div className="sf-browser__copy">
-                      <span className="sf-browser__eyebrow">INTERACTIVE ANTHOLOGY · VOL. IV</span>
+                      <span className="sf-browser__eyebrow">Interactive Anthology · Vol. IV</span>
                       <h4>Multiverse Visual Chronicle</h4>
                       <p>
                         Responsive editorial grid with frame-accurate scroll transitions and
                         character dossiers.
                       </p>
                       <div className="sf-browser__metrics">
-                        <span>60 FPS MOTION</span>
+                        <span>60 FPS Motion</span>
                         <span>·</span>
-                        <span>12-COL SWISS GRID</span>
+                        <span>12-Col Grid</span>
                       </div>
                     </div>
 
                     <div className="sf-browser__panels">
                       <div className="sf-comic-panel sf-comic-panel--tall">
                         <span>01</span>
-                        <strong>ORIGIN ARC</strong>
+                        <strong>Origin Arc</strong>
                       </div>
                       <div className="sf-comic-panel">
                         <span>02</span>
-                        <strong>TIMELINE</strong>
+                        <strong>Timeline</strong>
                       </div>
                       <div className="sf-comic-panel">
                         <span>03</span>
-                        <strong>ARCHIVE</strong>
+                        <strong>Archive</strong>
                       </div>
                     </div>
                   </div>
@@ -163,15 +179,13 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
       case 'entrepreneur-community':
         return (
           <div className="sf-media-scene sf-media-scene--founder">
-            <div className="sf-media-scene__sky" />
-            <div className="sf-media-scene__beams" />
-            <div className="sf-media-scene__grid" />
+            {renderBackdrop('founder')}
 
             <div className="sf-mockup-stage sf-mockup-stage--trio">
               <div className="sf-ui-card sf-ui-card--light">
                 <div className="sf-ui-card__top">
-                  <span>FOUNDER NETWORK</span>
-                  <span>VERIFIED</span>
+                  <span>Founder Network</span>
+                  <span>Verified</span>
                 </div>
                 <h4>Seed &amp; Series A Collective</h4>
                 <p>Curated peer feedback, pitch deck reviews, and 1-on-1 advisor hours.</p>
@@ -183,19 +197,19 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
                 </div>
               </div>
 
-              <div className="sf-ui-card sf-ui-card--dark">
+              <div className="sf-ui-card sf-ui-card--frosted">
                 <div className="sf-ui-card__top">
-                  <span>MENTOR SESSION</span>
+                  <span>Mentor Session</span>
                   <span>16:00 IST</span>
                 </div>
                 <h4>Product Architecture Critique</h4>
                 <div className="sf-ui-card__metrics">
                   <div>
-                    <span>DECK CLARITY</span>
+                    <span>Deck Clarity</span>
                     <strong>96%</strong>
                   </div>
                   <div>
-                    <span>COHORT</span>
+                    <span>Cohort</span>
                     <strong>W26</strong>
                   </div>
                 </div>
@@ -207,16 +221,14 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
       case 'vishnu-hospital':
         return (
           <div className="sf-media-scene sf-media-scene--hospital">
-            <div className="sf-media-scene__sky" />
-            <div className="sf-media-scene__beams" />
-            <div className="sf-media-scene__grid" />
+            {renderBackdrop('hospital')}
 
             <div className="sf-mockup-stage">
               <div className="sf-print-spread">
                 <div className="sf-poster-card sf-poster-card--main">
                   <div className="sf-poster-card__head">
-                    <span>VISHNU MULTISPECIALITY HOSPITAL</span>
-                    <span>ONCOLOGY</span>
+                    <span>Vishnu Multispeciality Hospital</span>
+                    <span>Oncology</span>
                   </div>
                   <div className="sf-poster-card__emblem">
                     <svg viewBox="0 0 80 80" width="46" height="46" aria-hidden="true">
@@ -244,14 +256,14 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
                 </div>
 
                 <div className="sf-poster-card sf-poster-card--side">
-                  <span className="sf-poster-card__label">PATIENT CARE SYSTEM</span>
+                  <span className="sf-poster-card__label">Patient Care System</span>
                   <h5>Empathetic typography &amp; high-contrast wayfinding</h5>
                   <div className="sf-poster-card__swatches">
                     <span className="sf-swatch sf-swatch--1" />
                     <span className="sf-swatch sf-swatch--2" />
                     <span className="sf-swatch sf-swatch--3" />
                   </div>
-                  <span className="sf-poster-card__meta">PRINT · OUTDOOR · SOCIAL</span>
+                  <span className="sf-poster-card__meta">Print · Outdoor · Social</span>
                 </div>
               </div>
             </div>
@@ -261,19 +273,17 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
       case 'bairava-motors':
         return (
           <div className="sf-media-scene sf-media-scene--motors">
-            <div className="sf-media-scene__sky" />
-            <div className="sf-media-scene__beams" />
-            <div className="sf-media-scene__grid" />
+            {renderBackdrop('motors')}
 
             <div className="sf-mockup-stage">
               <div className="sf-billboard">
                 <div className="sf-billboard__header">
-                  <span>BAIRAVA MOTORS · CAMPAIGN</span>
-                  <span>SERIES 05 / PRINT</span>
+                  <span>Bairava Motors · Campaign</span>
+                  <span>Series 05 / Print</span>
                 </div>
                 <div className="sf-billboard__main">
                   <div className="sf-billboard__title-col">
-                    <span className="sf-billboard__kicker">ENGINEERED MOTION</span>
+                    <span className="sf-billboard__kicker">Engineered Motion</span>
                     <h4>Precision Built For Every Road.</h4>
                     <p>Showroom launch identity, seasonal print flyers, and high-impact hoardings.</p>
                   </div>
@@ -282,18 +292,18 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
                       <path
                         d="M16 84 C55 28, 135 28, 204 84"
                         fill="none"
-                        stroke="rgba(255,255,255,0.22)"
+                        stroke="rgba(11,13,11,0.18)"
                         strokeWidth="2"
                       />
                       <path
                         d="M32 84 C68 42, 132 42, 188 84"
                         fill="none"
-                        stroke="#e6ece4"
+                        stroke="#1c2410"
                         strokeWidth="2.5"
                       />
-                      <circle cx="62" cy="84" r="14" fill="none" stroke="#ffffff" strokeWidth="2.2" />
-                      <circle cx="158" cy="84" r="14" fill="none" stroke="#ffffff" strokeWidth="2.2" />
-                      <line x1="10" y1="98" x2="210" y2="98" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+                      <circle cx="62" cy="84" r="14" fill="none" stroke="#0b0d0b" strokeWidth="2.2" />
+                      <circle cx="158" cy="84" r="14" fill="none" stroke="#0b0d0b" strokeWidth="2.2" />
+                      <line x1="10" y1="98" x2="210" y2="98" stroke="rgba(11,13,11,0.22)" strokeWidth="1" />
                     </svg>
                   </div>
                 </div>
@@ -306,30 +316,28 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
       default:
         return (
           <div className="sf-media-scene sf-media-scene--logistics">
-            <div className="sf-media-scene__sky" />
-            <div className="sf-media-scene__beams" />
-            <div className="sf-media-scene__grid" />
+            {renderBackdrop('logistics')}
 
             <div className="sf-mockup-stage">
               <div className="sf-booklet">
                 <div className="sf-booklet__page sf-booklet__page--left">
-                  <span className="sf-booklet__folio">01 · CORPORATE</span>
+                  <span className="sf-booklet__folio">01 · Corporate</span>
                   <h4>OEL Global Supply Chain</h4>
                   <p>
                     24-page editorial monograph covering sea freight, air cargo corridors, and
                     customs clearance protocols.
                   </p>
                   <div className="sf-booklet__specs">
-                    <span>SEA</span>
+                    <span>Sea</span>
                     <span>·</span>
-                    <span>AIR CARGO</span>
+                    <span>Air Cargo</span>
                     <span>·</span>
-                    <span>CUSTOMS</span>
+                    <span>Customs</span>
                   </div>
                 </div>
 
                 <div className="sf-booklet__page sf-booklet__page--right">
-                  <span className="sf-booklet__folio">02 · TELEMETRY</span>
+                  <span className="sf-booklet__folio">02 · Global Routes</span>
                   <svg viewBox="0 0 180 110" className="sf-route-svg" aria-hidden="true">
                     <path
                       d="M14 82 Q 62 18, 112 52 T 166 26"
@@ -350,12 +358,12 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
                   </svg>
                   <div className="sf-booklet__metrics">
                     <div>
-                      <span>PORTS</span>
+                      <span>Ports</span>
                       <strong>48+</strong>
                     </div>
                     <div>
-                      <span>PAGES</span>
-                      <strong>24 PP</strong>
+                      <span>Pages</span>
+                      <strong>24 pp</strong>
                     </div>
                   </div>
                 </div>
@@ -382,7 +390,7 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
     >
       {renderArtwork()}
 
-      {/* Unobtrusive bottom-right Case Study pill (never overlaps top mockup headers) */}
+      {/* Glossy Frosted Case Study Pill */}
       <div className="sf-media-slide__corner-badge">
         <span className="sf-media-slide__action">
           <span>Case Study</span>
