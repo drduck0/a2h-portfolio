@@ -382,12 +382,20 @@ export const ProjectMediaVisual: React.FC<ProjectMediaVisualProps> = ({
     >
       {renderArtwork()}
 
-      {/* Unobtrusive bottom-right Case Study pill (never overlaps top mockup headers) */}
+      {/* Refined Case Study pill button inside media card with perfect alignment and breathing room */}
       <div className="sf-media-slide__corner-badge">
-        <span className="sf-media-slide__action">
+        <button
+          type="button"
+          className="sf-media-slide__action"
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelect(project);
+          }}
+          aria-label={`Explore Case Study for ${project.title}`}
+        >
           <span>Case Study</span>
           <ArrowUpRight size={13} />
-        </span>
+        </button>
       </div>
     </div>
   );

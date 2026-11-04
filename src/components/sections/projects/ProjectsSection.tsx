@@ -8,7 +8,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProjectModal } from './ProjectModal';
 import { ProjectMediaVisual } from './ProjectMediaVisual';
 import { PROJECTS } from '../../../constants/portfolioData';
-import { Project, ProjectCategory } from '../../../types/portfolio';
+import { Project } from '../../../types/portfolio';
 
 interface ProjectsSectionProps {
   onInquire: () => void;
@@ -28,11 +28,9 @@ function easeOutCubic(x: number): number {
 
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) => {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [filter, setFilter] = useState<ProjectCategory>('all');
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
 
-  const filteredProjects =
-    filter === 'all' ? PROJECTS : PROJECTS.filter((p) => p.type === filter);
+  const filteredProjects = PROJECTS;
 
   const sectionRef = useRef<HTMLElement | null>(null);
   const mediaCardRef = useRef<HTMLDivElement | null>(null);
@@ -86,18 +84,42 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
       }
 
       // 2. Position Vertical Image Slides inside the Sliding Media Card:
-      // Slide k+1 enters from the top (-100% -> 0%) while Slide k exits downward (0% -> +100%)
+      // Slide k+1 enters from the bottom (+100% -> 0%) while Slide k exits upward (0% -> -100%)
       for (let i = 0; i < count; i++) {
         const slideEl = mediaSlideRefs.current[i];
         const innerEl = mediaInnerRefs.current[i];
         if (!slideEl) continue;
 
-        const relOffset = (continuousEasedIndex - i) * 100;
-        slideEl.style.transform = `translate3d(0, ${relOffset}%, 0)`;
+        const isCurrent = i === k;
+        const isIncoming = i === k + 1 && count > 1;
 
-        if (innerEl) {
-          const parallaxY = isMobile ? 0 : clamp((i - continuousEasedIndex) * 10, -14, 14);
-          const scaleVal = isMobile ? 1 : 1.04;
+        if (isCurrent) {
+          // Slide k: currently settled or exiting upwards
+          const exitOffset = -easedTransition * 100;
+          slideEl.style.transform = `translate3d(0, ${exitOffset}%, 0)`;
+          slideEl.style.opacity = easedTransition >= 0.995 ? '0' : '1';
+          slideEl.style.visibility = 'visible';
+          slideEl.style.pointerEvents = easedTransition < 0.5 ? 'auto' : 'none';
+        } else if (isIncoming) {
+          // Slide k+1: strictly hidden until transition commences (u > 0.005)
+          const enterOffset = (1 - easedTransition) * 100;
+          slideEl.style.transform = `translate3d(0, ${enterOffset}%, 0)`;
+          slideEl.style.opacity = u > 0.005 ? '1' : '0';
+          slideEl.style.visibility = u > 0.005 ? 'visible' : 'hidden';
+          slideEl.style.pointerEvents = easedTransition >= 0.5 ? 'auto' : 'none';
+        } else {
+          // Inactive slides: completely hidden offscreen
+          const offDir = i < k ? -100 : 100;
+          slideEl.style.transform = `translate3d(0, ${offDir}%, 0)`;
+          slideEl.style.opacity = '0';
+          slideEl.style.visibility = 'hidden';
+          slideEl.style.pointerEvents = 'none';
+        }
+
+        if (innerEl && (isCurrent || isIncoming)) {
+          const parallaxFactor = isCurrent ? -easedTransition * 8 : (1 - easedTransition) * 8;
+          const parallaxY = isMobile ? 0 : clamp(parallaxFactor, -12, 12);
+          const scaleVal = isMobile ? 1 : 1.03;
           innerEl.style.transform = `translate3d(0, ${parallaxY}%, 0) scale(${scaleVal})`;
         }
       }
@@ -238,26 +260,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
     });
   };
 
-  const handleFilterChange = (nextFilter: ProjectCategory) => {
-    if (nextFilter === filter) return;
-    setFilter(nextFilter);
-    setActiveStepIndex(0);
-    animStateRef.current.currentStep = 0;
-    animStateRef.current.targetStep = 0;
-
-    const sectionEl = sectionRef.current;
-    if (sectionEl) {
-      const rect = sectionEl.getBoundingClientRect();
-      const sectionTopDoc = window.scrollY + rect.top;
-      window.scrollTo({ top: sectionTopDoc, behavior: 'auto' });
-    }
-    window.setTimeout(() => {
-      if (window.ScrollTrigger) {
-        window.ScrollTrigger.refresh();
-      }
-    }, 60);
-  };
-
   const totalCountStr = String(filteredProjects.length).padStart(2, '0');
 
   return (
@@ -273,48 +275,12 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
       <span id="work" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
 
       <div className="sf-work-sticky">
-        {/* Minimal Top Header Bar */}
+        {/* Centered Work Pill Header */}
         <div className="sf-work-topbar">
-          <div className="sf-work-topbar__brand">
-            <span className="sf-work-topbar__title">A2H / SELECTED WORKS</span>
-            <span className="sf-work-topbar__sep" aria-hidden="true">
-              ·
-            </span>
-            <span className="sf-work-topbar__count">
-              {String(activeStepIndex + 1).padStart(2, '0')} — {totalCountStr}
-            </span>
-          </div>
-
-          <div className="sf-work-topbar__controls" role="tablist" aria-label="Filter works">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={filter === 'all'}
-              className={`sf-filter-tab ${filter === 'all' ? 'is-active' : ''}`}
-              onClick={() => handleFilterChange('all')}
-            >
-              ALL ({PROJECTS.length})
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={filter === 'uiux'}
-              className={`sf-filter-tab ${filter === 'uiux' ? 'is-active' : ''}`}
-              onClick={() => handleFilterChange('uiux')}
-            >
-              UI/UX &amp; WEB (3)
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={filter === 'graphic'}
-              className={`sf-filter-tab ${filter === 'graphic' ? 'is-active' : ''}`}
-              onClick={() => handleFilterChange('graphic')}
-            >
-              GRAPHIC &amp; PRINT (3)
-            </button>
-          </div>
+          <span className="a2h-about-pill">Work</span>
         </div>
+
+        {/* 2-Column (Desktop) / 2-Row (Mobile) Split Stage */}
 
         {/* 2-Column (Desktop) / 2-Row (Mobile) Split Stage */}
         <div className="sf-work-stage">

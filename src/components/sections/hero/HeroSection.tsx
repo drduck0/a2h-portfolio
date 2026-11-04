@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ASSETS } from '../../../constants/assets';
-import { PERSONAL_INFO, STATS } from '../../../constants/portfolioData';
+import { PERSONAL_INFO } from '../../../constants/portfolioData';
 
 interface HeroSectionProps {
   onOpenResume?: () => void;
@@ -255,8 +255,10 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                 <span className="a2h-about-pill">About Me</span>
 
                 <h2 id="heroAboutTitle" className="a2h-about-title split">
-                  A Creative Designer Passionate About
-                  <br />
+                  A Creative Designer Passionate About{' '}
+                  <span className="a2h-title-desktop-br">
+                    <br />
+                  </span>
                   <em>Digital Experiences.</em>
                 </h2>
 
@@ -270,22 +272,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                     about how it looks—it&apos;s about <strong>clear communication</strong>,{' '}
                     <strong>simplicity</strong>, and a <strong>seamless user experience</strong>.
                   </p>
-                </div>
-
-                {/* 4 Stat Cards */}
-                <div className="a2h-about-stats">
-                  {STATS.map((stat, idx) => (
-                    <div
-                      key={idx}
-                      className="a2h-about-stat card"
-                      data-to={stat.target}
-                      data-dec={stat.decimals}
-                      data-suf={stat.suffix}
-                    >
-                      <span className="a2h-about-stat__label">{stat.label}</span>
-                      <b className="a2h-about-stat__val">{stat.initialText}</b>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>

@@ -37,13 +37,17 @@ export function useScrollAnimations() {
         function processNode(node: Node) {
           if (node.nodeType === Node.TEXT_NODE) {
             const text = node.textContent || '';
-            if (!text.trim()) return;
+            if (!text) return;
+            if (/^\s+$/.test(text)) {
+              node.textContent = ' ';
+              return;
+            }
             const fragment = document.createDocumentFragment();
             const tokens = text.split(/(\s+)/);
             for (const token of tokens) {
               if (!token) continue;
               if (/^\s+$/.test(token)) {
-                fragment.appendChild(document.createTextNode(token));
+                fragment.appendChild(document.createTextNode(' '));
               } else {
                 const span = document.createElement('span');
                 span.className = 'w';
@@ -379,14 +383,27 @@ export function useScrollAnimations() {
 
         const measureAboutNaturalHeight = (paddingExtra: number) => {
           const aboutInner = document.getElementById('heroAboutBody');
-          if (!aboutInner) return 420;
+          if (!aboutInner) return 300;
+          const prevPosition = aboutInner.style.position;
           const prevHeight = aboutInner.style.height;
           const prevMinHeight = aboutInner.style.minHeight;
+          const prevDisplay = aboutInner.style.display;
+          const prevVisibility = aboutInner.style.visibility;
+
+          aboutInner.style.position = 'static';
           aboutInner.style.height = 'auto';
           aboutInner.style.minHeight = '0';
-          const sh = aboutInner.scrollHeight;
+          aboutInner.style.display = 'flex';
+          aboutInner.style.visibility = 'hidden';
+
+          const sh = aboutInner.scrollHeight || aboutInner.offsetHeight;
+
+          aboutInner.style.position = prevPosition;
           aboutInner.style.height = prevHeight;
           aboutInner.style.minHeight = prevMinHeight;
+          aboutInner.style.display = prevDisplay;
+          aboutInner.style.visibility = prevVisibility;
+
           return sh + paddingExtra;
         };
 
@@ -400,23 +417,21 @@ export function useScrollAnimations() {
 
           if (vw <= 768) {
             const w = Math.round(vw * 0.92);
-            const naturalH = measureAboutNaturalHeight(88);
-            const h = Math.round(
-              Math.min(vh - 28, Math.max(naturalH, 400))
-            );
-            const desiredTop = Math.max(14, (vh - h) / 2);
+            // Utilize generous full height on mobile (~82% of viewport height) so the card has ample breathing room with zero scrollbars
+            const h = Math.round(Math.min(vh - 52, Math.max(vh * 0.82, 480)));
+            const desiredTop = Math.max(16, (vh - h) / 2);
             return {
               width: w,
               height: h,
               yOffset: Math.round(desiredTop - currentMarginTop),
-              riseYPercent: -4,
+              riseYPercent: -2,
             };
           }
 
           // Expansive 16:9 aspect ratio on desktop & tablet utilizing generous viewport space
           const naturalH = measureAboutNaturalHeight(88);
-          const maxW = Math.min(vw * 0.92, 1380);
-          const maxH = Math.min(vh * 0.88, 776);
+          const maxW = Math.min(vw * 0.92, 1280);
+          const maxH = Math.min(vh * 0.84, 680);
           let w = maxW;
           let h = w * (9 / 16);
           if (h > maxH) {
