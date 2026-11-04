@@ -19,6 +19,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
     const checkScroll = () => {
       const heroEl = document.getElementById('hero');
       const projectsEl = document.getElementById('projects');
+      const processEl = document.getElementById('process');
       const footerEl = document.getElementById('footer');
       const vh = window.innerHeight;
 
@@ -34,13 +35,19 @@ export const Navbar: React.FC<NavbarProps> = () => {
         inProjects = projectsRect.top <= 48 && projectsRect.bottom >= vh * 0.85;
       }
 
+      let inProcess = false;
+      if (processEl) {
+        const processRect = processEl.getBoundingClientRect();
+        inProcess = processRect.top <= 48 && processRect.bottom >= vh * 0.85;
+      }
+
       let inFooter = false;
       if (footerEl) {
         const footerRect = footerEl.getBoundingClientRect();
         inFooter = footerRect.top < vh * 0.92;
       }
 
-      const shouldHide = inHero || inProjects || inFooter;
+      const shouldHide = inHero || inProjects || inProcess || inFooter;
       setIsNavHidden(shouldHide);
       if (shouldHide) {
         setMobileMenuOpen(false);
@@ -97,6 +104,9 @@ export const Navbar: React.FC<NavbarProps> = () => {
           <a className="nav-link" href="#work" onClick={(e) => handleNavClick(e, '#work')}>
             Work
           </a>
+          <a className="nav-link" href="#process" onClick={(e) => handleNavClick(e, '#process')}>
+            Process
+          </a>
           <a className="nav-link" href="#service" onClick={(e) => handleNavClick(e, '#service')}>
             Service
           </a>
@@ -134,6 +144,13 @@ export const Navbar: React.FC<NavbarProps> = () => {
                 onClick={(e) => handleNavClick(e, '#work')}
               >
                 Work
+              </a>
+              <a
+                className="mobile-nav-link"
+                href="#process"
+                onClick={(e) => handleNavClick(e, '#process')}
+              >
+                Process
               </a>
               <a
                 className="mobile-nav-link"

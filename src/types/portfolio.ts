@@ -46,6 +46,7 @@ export interface ProcessStep {
   title: string;
   shortTitle?: string;
   subtitle?: string;
+  headlineLines?: [string, string];
   description: string;
   clarityLabel?: string;
   clarityPercent?: number;

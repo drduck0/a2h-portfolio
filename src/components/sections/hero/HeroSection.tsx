@@ -141,6 +141,13 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                   WORK
                 </a>
                 <a
+                  href="#process"
+                  className="a2h-glass-nav__link"
+                  onClick={(e) => handleNavClick(e, '#process')}
+                >
+                  PROCESS
+                </a>
+                <a
                   href="#service"
                   className="a2h-glass-nav__link"
                   onClick={(e) => handleNavClick(e, '#service')}
@@ -186,6 +193,13 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                   onClick={(e) => handleNavClick(e, '#work')}
                 >
                   WORK
+                </a>
+                <a
+                  href="#process"
+                  className="a2h-glass-mobile-menu__link"
+                  onClick={(e) => handleNavClick(e, '#process')}
+                >
+                  PROCESS
                 </a>
                 <a
                   href="#service"

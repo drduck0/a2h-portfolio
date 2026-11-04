@@ -231,6 +231,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: 'Discover — Ideas & Inspiration',
     shortTitle: 'Discover',
     subtitle: 'Ideas & Inspiration',
+    headlineLines: ['Where raw ideas', 'find their direction.'],
     description:
       'Immersion into the raw vision—uncovering core objectives, emotional triggers, creative sparks, and directional possibilities before form takes shape.',
     clarityLabel: '20% Clarity · Diffused Spark',
@@ -252,6 +253,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: 'Research',
     shortTitle: 'Research',
     subtitle: 'User & Market Intelligence',
+    headlineLines: ['Insights shaped', 'into clear structure.'],
     description:
       'Synthesizing user behaviors, competitive landscapes, and information architecture to turn abstract inspiration into grounded strategic clarity.',
     clarityLabel: '40% Clarity · Emerging Contours',
@@ -273,6 +275,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: 'Design',
     shortTitle: 'Design',
     subtitle: 'Visual Systems & Prototyping',
+    headlineLines: ['Systems crafted', 'for human rhythm.'],
     description:
       'Translating strategy into expressive visual architecture—crafting wireframes, scalable design tokens, high-contrast typography, and interactive layouts.',
     clarityLabel: '65% Clarity · Structured Form',
@@ -294,6 +297,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: 'Refine',
     shortTitle: 'Refine',
     subtitle: 'Micro-Interactions & Validation',
+    headlineLines: ['Every detail', 'honed for clarity.'],
     description:
       'Sharpening every pixel and transition—iterating through usability feedback, motion choreography, optical alignment, and accessibility standards.',
     clarityLabel: '85% Clarity · High-Precision Polish',
@@ -315,6 +319,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: 'Deliver',
     shortTitle: 'Deliver',
     subtitle: 'Production Handoff & Launch',
+    headlineLines: ['Production craft,', 'ready to launch.'],
     description:
       'Bringing the complete vision into razor-sharp reality—shipping production-ready design systems, annotated developer specs, and launch-ready assets.',
     clarityLabel: '100% Clarity · Crystal Horizon',

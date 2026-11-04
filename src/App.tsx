@@ -11,6 +11,7 @@ import { Footer } from './components/layout/Footer';
 import { HeroSection } from './components/sections/hero/HeroSection';
 import { ExpertiseSection } from './components/sections/expertise/ExpertiseSection';
 import { ProjectsSection } from './components/sections/projects/ProjectsSection';
+import { ProcessSection } from './components/sections/process/ProcessSection';
 import { ContactSection } from './components/sections/contact/ContactSection';
 import { ResumeModal } from './components/sections/contact/ResumeModal';
 import { ContactModal } from './components/sections/contact/ContactModal';
@@ -46,6 +47,9 @@ export default function App() {
 
           {/* Featured Works Showcase with Filters & Case Study Modals */}
           <ProjectsSection onInquire={() => setShowContactModal(true)} />
+
+          {/* Stillform-Inspired 5-Step Creative Process Section */}
+          <ProcessSection onInquire={() => setShowContactModal(true)} />
 
           {/* Let's Connect CTA & Petals */}
           <ContactSection

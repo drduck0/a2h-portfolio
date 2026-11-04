@@ -38,7 +38,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
   const mediaCardRef = useRef<HTMLDivElement | null>(null);
   const mediaSlideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const mediaInnerRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const textCardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const textCardRefs = useRef<(HTMLElement | null)[]>([]);
   const lineRefs = useRef<(HTMLSpanElement | null)[][]>([]);
   const footerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const kickerRefs = useRef<(HTMLDivElement | null)[]>([]);
