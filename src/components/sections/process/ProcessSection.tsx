@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, ChevronRight } from 'lucide-react';
 import { PROCESS_STEPS } from '../../../constants/portfolioData';
 import { ProcessCardVisual } from './ProcessCardVisual';
 
@@ -43,8 +43,8 @@ const DESKTOP_SPLINE: KeyframePoint[] = [
   { rel: 0.0, cxRatio: 0.455, cyRatio: 0.5, scale: 1.0, opacity: 1 },
   { rel: 0.5, cxRatio: 0.525, cyRatio: 0.615, scale: 0.84, opacity: 1 },
   { rel: 1.0, cxRatio: 0.755, cyRatio: 0.835, scale: 0.275, opacity: 1 },
-  { rel: 1.35, cxRatio: 0.775, cyRatio: 0.885, scale: 0.2, opacity: 1 },
-  { rel: 1.65, cxRatio: 0.79, cyRatio: 0.96, scale: 0.15, opacity: 0 },
+  { rel: 1.3, cxRatio: 0.785, cyRatio: 0.93, scale: 0.19, opacity: 0.35 },
+  { rel: 1.55, cxRatio: 0.81, cyRatio: 1.04, scale: 0.13, opacity: 0 },
 ];
 
 const MOBILE_SPLINE: KeyframePoint[] = [
@@ -54,8 +54,7 @@ const MOBILE_SPLINE: KeyframePoint[] = [
   { rel: 0.0, cxRatio: 0.5, cyRatio: 0.36, scale: 1.0, opacity: 1 },
   { rel: 0.5, cxRatio: 0.58, cyRatio: 0.52, scale: 0.78, opacity: 1 },
   { rel: 1.0, cxRatio: 0.82, cyRatio: 0.89, scale: 0.24, opacity: 1 },
-  { rel: 1.35, cxRatio: 0.85, cyRatio: 0.93, scale: 0.18, opacity: 1 },
-  { rel: 1.65, cxRatio: 0.88, cyRatio: 0.98, scale: 0.13, opacity: 0 },
+  { rel: 1.35, cxRatio: 0.86, cyRatio: 1.02, scale: 0.16, opacity: 0 },
 ];
 
 function sampleSpline(rel: number, points: KeyframePoint[]) {
@@ -95,7 +94,6 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
   const cardInnerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const fullOverlayRef = useRef<HTMLDivElement | null>(null);
   const textBlockRefs = useRef<(HTMLElement | null)[]>([]);
-  const bottomHudRef = useRef<HTMLDivElement | null>(null);
 
   const animStateRef = useRef({
     currentT: 0,
@@ -179,6 +177,15 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
         const innerEl = cardInnerRefs.current[i];
         if (!cardEl) continue;
 
+        // CRITICAL: Prevent any subsequent cards (i >= 1) from peeking prematurely
+        // during the intro headline and Card 01 fullscreen expansion phases
+        if (t < 1.48 && i > 0) {
+          cardEl.style.opacity = '0';
+          cardEl.style.visibility = 'hidden';
+          cardEl.style.pointerEvents = 'none';
+          continue;
+        }
+
         if (i === 0 && t < 2.0) {
           // Card 01 special choreography: Rise (00:01) -> Fullscreen 16:9 (00:02-00:03) -> Contract to Center Square (00:04)
           const initW = isMobile ? Math.round(vw * 0.82) : Math.round(Math.min(vw * 0.45, 620));
@@ -194,12 +201,12 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
           let radius = 24;
 
           if (t < 0.48) {
-            const uRise = easeOutCubic(clamp((t - 0.03) / 0.45, 0, 1));
+            const uRise = easeOutCubic(clamp((t - 0.06) / 0.42, 0, 1));
             cx = vw * 0.5;
             cy = lerp(vh * 0.94, vh * 0.54, uRise);
             w = initW;
             h = initH;
-            opacity = clamp((t - 0.01) / 0.16, 0, 1);
+            opacity = clamp((t - 0.05) / 0.18, 0, 1);
             radius = 22;
           } else if (t < 1.32) {
             const uExpand = easeInOutCubic(clamp((t - 0.48) / 0.56, 0, 1));
@@ -227,6 +234,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
           cardEl.style.borderRadius = `${radius}px`;
           cardEl.style.transform = `translate3d(${leftPx}px, ${topPx}px, 0) scale3d(1, 1, 1)`;
           cardEl.style.opacity = `${opacity}`;
+          cardEl.style.visibility = opacity < 0.01 ? 'hidden' : 'visible';
           cardEl.style.zIndex = '22';
           cardEl.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none';
 
@@ -236,17 +244,21 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
         } else {
           // Standard 3-slot diagonal spline choreography (Bottom-Right -> Center -> Top-Left)
           let effectiveRel = i - s;
+          let enterMultiplier = 1;
+
           if (t < 2.0) {
             // Before t = 2.0, Card 02 (i = 1) smoothly enters Bottom-Right thumbnail slot as Card 01 contracts
-            const preEnter = 1 - easeOutCubic(clamp((t - 1.48) / 0.52, 0, 1));
+            const preProgress = clamp((t - 1.48) / 0.52, 0, 1);
+            const preEnter = 1 - easeOutCubic(preProgress);
             effectiveRel = i + preEnter * 0.55;
+            enterMultiplier = easeOutCubic(preProgress);
           }
 
           const sampled = sampleSpline(effectiveRel, spline);
           const cx = vw * sampled.cxRatio;
           const cy = vh * sampled.cyRatio;
           const scale = sampled.scale;
-          const opacity = sampled.opacity;
+          const finalOpacity = sampled.opacity * enterMultiplier;
 
           const leftPx = cx - centerSide / 2;
           const topPx = cy - centerSide / 2;
@@ -259,9 +271,10 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
           cardEl.style.height = `${centerSide}px`;
           cardEl.style.borderRadius = `${compensatedRadius}px`;
           cardEl.style.transform = `translate3d(${leftPx}px, ${topPx}px, 0) scale3d(${scale}, ${scale}, 1)`;
-          cardEl.style.opacity = `${opacity}`;
+          cardEl.style.opacity = `${finalOpacity.toFixed(3)}`;
+          cardEl.style.visibility = finalOpacity < 0.01 ? 'hidden' : 'visible';
           cardEl.style.zIndex = `${zIdx}`;
-          cardEl.style.pointerEvents = opacity > 0.35 && effectiveRel <= 1.2 ? 'auto' : 'none';
+          cardEl.style.pointerEvents = finalOpacity > 0.35 && effectiveRel <= 1.2 ? 'auto' : 'none';
 
           if (innerEl) {
             innerEl.style.transform = 'scale(1)';
@@ -283,13 +296,6 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
         textEl.style.opacity = `${stepAlpha}`;
         textEl.style.transform = `translate3d(0, ${yOffset}px, 0)`;
         textEl.style.pointerEvents = stepAlpha > 0.55 ? 'auto' : 'none';
-      }
-
-      // 7. Bottom-Left Progress HUD ("INSIDE THE PROCESS  01 / 05")
-      if (bottomHudRef.current) {
-        bottomHudRef.current.style.opacity = `${stageReveal}`;
-        bottomHudRef.current.style.transform = `translate3d(0, ${(1 - stageReveal) * 14}px, 0)`;
-        bottomHudRef.current.style.pointerEvents = stageReveal > 0.5 ? 'auto' : 'none';
       }
     },
     [totalSteps]
@@ -357,9 +363,6 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
     });
   };
 
-  const activeStepStr = String(activeStepIdx + 1).padStart(2, '0');
-  const totalStepStr = String(totalSteps).padStart(2, '0');
-
   return (
     <section
       ref={sectionRef}
@@ -373,18 +376,8 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
       <span id="loop" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
 
       <div ref={stickyRef} className="sf-proc-sticky">
-        {/* Minimal Top Header Bar (Matches STILL / FORM top bar & A2H Selected Works) */}
+        {/* Minimal Top Header Bar */}
         <div className="sf-proc-topbar">
-          <div className="sf-proc-topbar__brand">
-            <span className="sf-proc-topbar__title">A2H / CREATIVE PROCESS</span>
-            <span className="sf-proc-topbar__sep" aria-hidden="true">
-              ·
-            </span>
-            <span className="sf-proc-topbar__count">
-              {inCarouselPhase ? `${activeStepStr} — ${totalStepStr}` : `05 PHASES`}
-            </span>
-          </div>
-
           <div className="sf-proc-topbar__steps" role="tablist" aria-label="Jump to process phase">
             {PROCESS_STEPS.map((step, idx) => {
               const isCurrent = inCarouselPhase && activeStepIdx === idx;
@@ -534,37 +527,6 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
               </article>
             );
           })}
-        </div>
-
-        {/* 4. Bottom-Left Progress Indicator ("INSIDE THE PROCESS  01 / 05" — Frames 00:04 -> 00:07) */}
-        <div ref={bottomHudRef} className="sf-proc-bottom-hud">
-          <span className="sf-proc-bottom-hud__label">INSIDE THE PROCESS</span>
-          <span className="sf-proc-bottom-hud__counter">
-            <strong>{activeStepStr}</strong>
-            <span className="sf-proc-bottom-hud__slash">/</span>
-            <span>{totalStepStr}</span>
-          </span>
-
-          <div className="sf-proc-bottom-hud__arrows">
-            <button
-              type="button"
-              className="sf-proc-hud-arrow"
-              onClick={() => scrollToStepIndex(activeStepIdx - 1)}
-              disabled={activeStepIdx === 0}
-              aria-label="Previous process step"
-            >
-              <ChevronLeft size={13} />
-            </button>
-            <button
-              type="button"
-              className="sf-proc-hud-arrow"
-              onClick={() => scrollToStepIndex(activeStepIdx + 1)}
-              disabled={activeStepIdx === totalSteps - 1}
-              aria-label="Next process step"
-            >
-              <ChevronRight size={13} />
-            </button>
-          </div>
         </div>
       </div>
     </section>
