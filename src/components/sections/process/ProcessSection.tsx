@@ -5,7 +5,6 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Pill } from '../../common/Pill';
 import { PROCESS_STEPS } from '../../../constants/portfolioData';
 import { ProcessCardVisual } from './ProcessCardVisual';
 
@@ -374,10 +373,10 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
       <span id="loop" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
 
       <div ref={stickyRef} className="sf-proc-sticky">
-        {/* Minimal Top Header Bar (Matches clean header branding) */}
+        {/* Minimal Top Header Bar (Matches STILL / FORM top bar & A2H Selected Works) */}
         <div className="sf-proc-topbar">
           <div className="sf-proc-topbar__brand">
-            <span className="sf-proc-topbar__title">Creative Process</span>
+            <span className="sf-proc-topbar__title">A2H / CREATIVE PROCESS</span>
             <span className="sf-proc-topbar__sep" aria-hidden="true">
               ·
             </span>
@@ -410,10 +409,10 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
 
         {/* 1. Centered Editorial Intro Headline (Frame 00:00) */}
         <div ref={introBlockRef} className="sf-proc-intro">
-          <Pill>Design Process</Pill>
+          <span className="sf-proc-intro__kicker">DESIGN METHODOLOGY · 05 STEPS</span>
           <h2 className="sf-proc-intro__headline">
-            <span>Not Every Idea</span>
-            <span>Starts In <em>Focus.</em></span>
+            <span>Not every idea</span>
+            <span>starts in focus.</span>
           </h2>
         </div>
 
@@ -482,9 +481,9 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
                 className="sf-proc-editorial-item"
               >
                 <div className="sf-proc-editorial__kicker">
-                  <span>Phase {step.stepNumber}</span>
+                  <span>STEP {step.stepNumber}</span>
                   <span aria-hidden="true">·</span>
-                  <span>{step.subtitle || step.title}</span>
+                  <span>{(step.subtitle || step.title).toUpperCase()}</span>
                 </div>
 
                 <h3 className="sf-proc-editorial__headline">
@@ -503,7 +502,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onInquire }) => 
                             ·
                           </span>
                         )}
-                        <span>{item}</span>
+                        <span>{item.toUpperCase()}</span>
                       </React.Fragment>
                     ))}
                   </div>

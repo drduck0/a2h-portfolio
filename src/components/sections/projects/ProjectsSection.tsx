@@ -276,7 +276,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
         {/* Minimal Top Header Bar */}
         <div className="sf-work-topbar">
           <div className="sf-work-topbar__brand">
-            <span className="sf-work-topbar__title">Selected Works</span>
+            <span className="sf-work-topbar__title">A2H / SELECTED WORKS</span>
             <span className="sf-work-topbar__sep" aria-hidden="true">
               ·
             </span>
@@ -293,7 +293,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
               className={`sf-filter-tab ${filter === 'all' ? 'is-active' : ''}`}
               onClick={() => handleFilterChange('all')}
             >
-              All ({PROJECTS.length})
+              ALL ({PROJECTS.length})
             </button>
             <button
               type="button"
@@ -302,7 +302,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
               className={`sf-filter-tab ${filter === 'uiux' ? 'is-active' : ''}`}
               onClick={() => handleFilterChange('uiux')}
             >
-              UI/UX &amp; Web (3)
+              UI/UX &amp; WEB (3)
             </button>
             <button
               type="button"
@@ -311,7 +311,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
               className={`sf-filter-tab ${filter === 'graphic' ? 'is-active' : ''}`}
               onClick={() => handleFilterChange('graphic')}
             >
-              Graphic &amp; Print (3)
+              GRAPHIC &amp; PRINT (3)
             </button>
           </div>
         </div>
