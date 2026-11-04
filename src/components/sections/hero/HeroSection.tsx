@@ -273,6 +273,59 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                     <strong>simplicity</strong>, and a <strong>seamless user experience</strong>.
                   </p>
                 </div>
+
+                {/* Frosted Glass Skills Dock */}
+                <div className="a2h-about-skills-dock">
+                  <div className="a2h-about-skills-dock__inner">
+                    <ul className="a2h-about-skills-dock__list">
+                      <li className="a2h-about-skill-item">
+                        <svg className="a2h-skill-logo" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                          <path d="M8 24c2.209 0 4-1.791 4-4v-4H8c-2.209 0-4 1.791-4 4s1.791 4 4 4z" fill="#0ACF83"/>
+                          <path d="M4 12c0-2.209 1.791-4 4-4h4v8H8c-2.209 0-4-1.791-4-4z" fill="#A259FF"/>
+                          <path d="M4 4c0-2.209 1.791-4 4-4h4v8H8C5.791 8 4 6.209 4 4z" fill="#F24E1E"/>
+                          <path d="M12 0h4c2.209 0 4 1.791 4 4s-1.791 4-4 4h-4V0z" fill="#FF7262"/>
+                          <path d="M20 12c0 2.209-1.791 4-4 4s-4-1.791-4-4 1.791-4 4-4 4 1.791 4 4z" fill="#1ABCFE"/>
+                        </svg>
+                        <span>Figma</span>
+                      </li>
+                      <li className="a2h-about-skill-item">
+                        <svg className="a2h-skill-logo" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                          <rect width="24" height="24" rx="5" fill="#001e36"/>
+                          <text x="5" y="16.5" fill="#31a8ff" fontSize="12" fontWeight="800" fontFamily="system-ui, sans-serif">Ps</text>
+                        </svg>
+                        <span>Photoshop</span>
+                      </li>
+                      <li className="a2h-about-skill-item">
+                        <svg className="a2h-skill-logo" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                          <rect width="24" height="24" rx="5" fill="#330000"/>
+                          <text x="6" y="16.5" fill="#ff9a00" fontSize="12" fontWeight="800" fontFamily="system-ui, sans-serif">Ai</text>
+                        </svg>
+                        <span>Illustrator</span>
+                      </li>
+                      <li className="a2h-about-skill-item">
+                        <svg className="a2h-skill-logo" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                          <rect width="24" height="24" rx="5" fill="#49021f"/>
+                          <text x="6.5" y="16.5" fill="#ff3366" fontSize="12" fontWeight="800" fontFamily="system-ui, sans-serif">Id</text>
+                        </svg>
+                        <span>InDesign</span>
+                      </li>
+                      <li className="a2h-about-skill-item">
+                        <svg className="a2h-skill-logo" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                          <rect width="24" height="24" rx="5" fill="#00005b"/>
+                          <text x="5.5" y="16.5" fill="#9999ff" fontSize="12" fontWeight="800" fontFamily="system-ui, sans-serif">Ae</text>
+                        </svg>
+                        <span>After Effects</span>
+                      </li>
+                      <li className="a2h-about-skill-item">
+                        <svg className="a2h-skill-logo" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                          <rect width="24" height="24" rx="5" fill="#00005b"/>
+                          <text x="5.5" y="16.5" fill="#ea77ff" fontSize="12" fontWeight="800" fontFamily="system-ui, sans-serif">Pr</text>
+                        </svg>
+                        <span>Premiere Pro</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

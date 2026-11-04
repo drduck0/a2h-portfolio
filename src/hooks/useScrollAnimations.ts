@@ -328,33 +328,19 @@ export function useScrollAnimations() {
 
       // 6. setupScroll
       function setupScroll() {
-        // Counters helper for About Us stats
-        const cardElements = document.querySelectorAll<HTMLElement>('.card');
-        function setCounters(p: number) {
-          cardElements.forEach((card) => {
-            const to = parseFloat(card.getAttribute('data-to') || '0');
-            const dec = parseInt(card.getAttribute('data-dec') || '0', 10);
-            const suf = card.getAttribute('data-suf') || '';
-            const b = card.querySelector('b');
-            if (b) {
-              b.textContent = (to * p).toFixed(dec) + suf;
-            }
-          });
-        }
-
         // Initial states for the About Us reveal layer inside the glass card
         const aboutBody = document.getElementById('heroAboutBody');
         const aboutPill = document.querySelector('.a2h-about-pill');
         const aboutWords = document.querySelectorAll('#heroAboutTitle .w');
         const aboutParas = document.querySelectorAll('.a2h-about-para');
-        const aboutStats = document.querySelectorAll('.a2h-about-stat');
+        const aboutSkillsDock = document.querySelector('.a2h-about-skills-dock');
 
         if (aboutBody) gsap.set(aboutBody, { autoAlpha: 0, pointerEvents: 'none' });
         if (aboutPill) gsap.set(aboutPill, { opacity: 0, y: 16, filter: 'blur(6px)' });
         if (aboutWords.length) gsap.set(aboutWords, { opacity: 0, y: 22, filter: 'blur(8px)' });
         if (aboutParas.length) gsap.set(aboutParas, { opacity: 0, y: 18, filter: 'blur(6px)' });
-        if (aboutStats.length) {
-          gsap.set(aboutStats, { opacity: 0, y: 18, scale: 0.96, filter: 'blur(6px)' });
+        if (aboutSkillsDock) {
+          gsap.set(aboutSkillsDock, { opacity: 0, y: 20, filter: 'blur(6px)' });
         }
 
         // Compute responsive initial and expanded dimensions for the glass card
@@ -469,7 +455,6 @@ export function useScrollAnimations() {
         });
 
         heroScrollTrigger = heroTl.scrollTrigger;
-        const counterProxy = { p: 0 };
 
         // Phase 1: Card rises to its height while meadow background dollies in
         heroTl
@@ -654,27 +639,15 @@ export function useScrollAnimations() {
             6.2
           )
           .to(
-            '.a2h-about-stat',
+            '.a2h-about-skills-dock',
             {
               opacity: 1,
               y: 0,
-              scale: 1,
               filter: 'blur(0px)',
-              stagger: 0.08,
-              duration: 1.2,
+              duration: 1.3,
               ease: 'power3.out',
             },
-            6.7
-          )
-          .to(
-            counterProxy,
-            {
-              p: 1,
-              duration: 2.0,
-              ease: 'power2.out',
-              onUpdate: () => setCounters(counterProxy.p),
-            },
-            6.7
+            6.6
           )
           // Hold buffer at the end of the 16:9 About Us reveal
           .to({}, { duration: 1.0 }, 8.8);

@@ -586,10 +586,13 @@ section.hero,
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: clamp(10px, 1.8vh, 20px);
+  justify-content: flex-start;
+  padding-top: clamp(26px, 5.2vh, 52px);
+  padding-bottom: clamp(16px, 2.5vh, 28px);
+  padding-left: clamp(16px, 3.2vw, 44px);
+  padding-right: clamp(16px, 3.2vw, 44px);
+  gap: clamp(10px, 1.6vh, 18px);
   text-align: center;
-  padding: clamp(14px, 2.4vh, 28px) clamp(16px, 3.2vw, 44px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -668,48 +671,71 @@ h2#heroAboutTitle.a2h-about-title em {
   font-weight: 700;
 }
 
-.a2h-about-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(10px, 1.4vw, 20px);
-  width: min(1140px, 100%);
-  margin: 0 auto clamp(8px, 1.4vh, 16px);
-}
-
-.a2h-about-stat.card {
-  min-height: auto;
-  padding: clamp(14px, 2vh, 22px) clamp(16px, 1.8vw, 26px);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.92);
-  box-shadow:
-    0 8px 22px rgba(10, 14, 10, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+/* Skills & Applications Frosted Glass Pill Dock inside 16:9 Card (docked at bottom) */
+.a2h-about-skills-dock {
+  width: fit-content;
+  max-width: 94%;
+  margin: auto auto 0 auto;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 6px;
-  text-align: left;
-  mask-image: none;
-  -webkit-mask-image: none;
+  justify-content: center;
 }
 
-.a2h-about-stat__label {
-  font-size: clamp(11px, 0.9vw, 13px);
+.a2h-about-skills-dock__inner {
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(246, 247, 244, 0.92) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 12px 32px rgba(12, 22, 8, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  padding: clamp(8px, 1.1vh, 11px) clamp(16px, 2.2vw, 26px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.a2h-about-skills-dock__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 2vw, 24px);
+  flex-wrap: wrap;
+}
+
+.a2h-about-skill-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6.5px;
+  font-size: clamp(11.5px, 0.92vw, 13px);
   font-weight: 600;
-  color: #363b36;
-  line-height: 1.25;
+  color: #141712;
+  transition: transform 0.18s ease;
 }
 
-.a2h-about-stat__val {
-  font-size: clamp(24px, 2.55vw, 38px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #070907;
-  line-height: 1.05;
+.a2h-about-skill-item:hover {
+  transform: translateY(-1.5px);
+}
+
+.a2h-skill-logo {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  .a2h-about-skills-dock__inner {
+    border-radius: 20px;
+    padding: 10px 14px;
+  }
 }
 
 .a2h-glass-kicker {
