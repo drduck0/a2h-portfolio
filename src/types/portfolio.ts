@@ -9,6 +9,7 @@ export interface Project {
   id: string;
   num: string;
   title: string;
+  headlineLines: [string, string, string];
   category: string;
   type: 'uiux' | 'graphic';
   description: string;

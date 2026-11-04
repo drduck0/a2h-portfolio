@@ -18,6 +18,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
   useEffect(() => {
     const checkScroll = () => {
       const heroEl = document.getElementById('hero');
+      const projectsEl = document.getElementById('projects');
       const footerEl = document.getElementById('footer');
       const vh = window.innerHeight;
 
@@ -27,13 +28,19 @@ export const Navbar: React.FC<NavbarProps> = () => {
         inHero = heroRect.bottom > vh * 0.35;
       }
 
+      let inProjects = false;
+      if (projectsEl) {
+        const projectsRect = projectsEl.getBoundingClientRect();
+        inProjects = projectsRect.top <= 48 && projectsRect.bottom >= vh * 0.85;
+      }
+
       let inFooter = false;
       if (footerEl) {
         const footerRect = footerEl.getBoundingClientRect();
         inFooter = footerRect.top < vh * 0.92;
       }
 
-      const shouldHide = inHero || inFooter;
+      const shouldHide = inHero || inProjects || inFooter;
       setIsNavHidden(shouldHide);
       if (shouldHide) {
         setMobileMenuOpen(false);
