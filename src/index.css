@@ -1409,87 +1409,290 @@ section.stats,
   box-shadow: 0 4px 12px rgba(77, 106, 16, 0.12);
 }
 
-/* 4c. EXPERTISE & WHAT I DO */
-section.expertise,
-#expertise {
+/* 4c. EXPERTISE & WHAT I DO (ROLLING WHEEL SHOWROOM & WORK INTRO) */
+.a2h-exp-scroll-track,
+section#expertise {
   position: relative;
-  background: #fafafa;
-  padding: 110px 0 100px;
+  width: 100%;
+  height: 280vh;
+  background: #ffffff;
   border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
 }
 
-.expertise-container {
-  max-width: 1220px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.expertise-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 48px;
-}
-
-.expertise-card {
-  position: relative;
-  background: #fff;
-  border-radius: 24px;
-  border: 1px solid #e6e8e6;
-  padding: 32px 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-shadow: 0 4px 20px rgba(11, 13, 11, 0.04);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s, border-color 0.35s;
-}
-
-.expertise-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 36px rgba(11, 13, 11, 0.08);
-  border-color: rgba(11, 13, 11, 0.24);
-}
-
-.expertise-card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: var(--pill);
-  color: var(--ink);
+.a2h-exp-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #ffffff;
+  user-select: none;
 }
 
-.expertise-card h3 {
-  font-size: 21px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
-
-.expertise-tags {
+/* Phase 1: 2-Column Showroom */
+.a2h-exp-showroom {
+  position: absolute;
+  inset: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 clamp(28px, 5vw, 72px);
+  width: 100%;
+  will-change: transform, opacity;
 }
 
-.expertise-tag {
-  font-size: 12px;
-  font-weight: 500;
-  padding: 5px 11px;
-  border-radius: 999px;
-  background: #f3f5f3;
-  color: #242824;
-  border: 1px solid rgba(11, 13, 11, 0.08);
-  transition: background 0.2s, color 0.2s;
+.a2h-exp-left {
+  flex: 0 0 clamp(280px, 32%, 390px);
+  max-width: 390px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  z-index: 10;
 }
 
-.expertise-tag:hover {
-  background: var(--pill);
+.a2h-exp-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+.a2h-exp-headline {
+  font-family: var(--font);
+  font-size: clamp(32px, 3.8vw, 54px);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
   color: var(--ink);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.a2h-exp-subtext {
+  font-size: clamp(14px, 1.1vw, 15.5px);
+  line-height: 1.6;
+  color: #52525b;
+  margin: 6px 0 0;
+  max-width: 360px;
+  font-weight: 400;
+}
+
+/* Right Column: Rolling Wheel List */
+.a2h-exp-right {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  padding-left: clamp(24px, 5vw, 72px);
+}
+
+.a2h-exp-wheel-stage {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  height: clamp(380px, 58vh, 520px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 24%, black 76%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 24%, black 76%, transparent 100%);
+}
+
+.a2h-exp-focal-pip {
+  position: absolute;
+  top: calc(50% - 4px);
+  right: clamp(16px, 2.5vw, 36px);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 10px rgba(11, 13, 11, 0.25);
+  z-index: 5;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.a2h-exp-wheel-list {
+  position: absolute;
+  top: calc(50% - 42px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.a2h-exp-wheel-item {
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: var(--font);
+  font-size: clamp(38px, 4.8vw, 76px);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: filter 0.1s linear, opacity 0.1s linear, transform 0.1s linear, color 0.1s linear;
+  transform-origin: left center;
+  will-change: transform, filter, opacity;
+}
+
+/* Phase 2: Centered Impact Headline "WORK I'M SUPER PROUD OF." */
+.a2h-exp-work-proud {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 25;
+  will-change: transform, opacity;
+  padding: 0 24px;
+  text-align: center;
+  gap: 16px;
+}
+
+.a2h-exp-proud-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+.a2h-exp-work-proud__headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: var(--font);
+  font-size: clamp(40px, 7.2vw, 96px);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.038em;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-align: center;
+  gap: 6px;
+}
+
+.a2h-proud-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 1.4vw, 22px);
+}
+
+.a2h-proud-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 4px;
+}
+
+.a2h-proud-word {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-origin: left bottom;
+}
+
+@media (max-width: 850px) {
+  .a2h-exp-showroom {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: clamp(12px, 2.5vh, 22px);
+    padding: clamp(16px, 2.5vh, 32px) 20px;
+  }
+
+  .a2h-exp-left {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .a2h-exp-headline {
+    font-size: clamp(24px, 6.2vw, 34px);
+    align-items: center;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .a2h-exp-subtext {
+    display: none;
+  }
+
+  .a2h-exp-right {
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    padding-left: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .a2h-exp-wheel-stage {
+    width: 100%;
+    max-width: 100%;
+    height: clamp(220px, 40vh, 290px);
+    justify-content: center;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
+  }
+
+  .a2h-exp-focal-pip {
+    display: none;
+  }
+
+  .a2h-exp-wheel-list {
+    left: 0;
+    right: 0;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    top: calc(50% - 27px);
+  }
+
+  .a2h-exp-wheel-item {
+    height: 54px;
+    font-size: clamp(22px, 6.4vw, 36px);
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    letter-spacing: -0.03em;
+    transform-origin: center center;
+  }
+
+  .a2h-exp-work-proud__headline {
+    font-size: clamp(34px, 9.5vw, 56px);
+    gap: 4px;
+  }
+
+  .a2h-proud-line {
+    gap: 8px;
+  }
 }
 
 /* 4d. FEATURED PROJECTS (STILLFORM-INSPIRED SCROLL-DRIVEN SPLIT STAGE) */
@@ -1509,7 +1712,7 @@ section#projects {
   height: 100vh;
   height: 100dvh;
   min-height: 580px;
-  padding: 12px 18px 18px;
+  padding: clamp(14px, 2vh, 20px) 18px 18px;
   display: flex;
   flex-direction: column;
   gap: 10px;

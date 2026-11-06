@@ -275,13 +275,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onInquire }) =
       <span id="work" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
 
       <div className="sf-work-sticky">
-        {/* Centered Work Pill Header */}
-        <div className="sf-work-topbar">
-          <span className="a2h-about-pill">Work</span>
-        </div>
-
-        {/* 2-Column (Desktop) / 2-Row (Mobile) Split Stage */}
-
         {/* 2-Column (Desktop) / 2-Row (Mobile) Split Stage */}
         <div className="sf-work-stage">
           {filteredProjects.map((project, idx) => {
