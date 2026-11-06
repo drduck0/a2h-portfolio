@@ -40,7 +40,11 @@ export const ExpertiseSection: React.FC<ExpertiseSectionProps> = () => {
   const showroomStageRef = useRef<HTMLDivElement | null>(null);
   const wheelListRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const focalPipRef = useRef<HTMLDivElement | null>(null);
+  const pipRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
+  const orbTopRef = useRef<HTMLDivElement | null>(null);
+  const orbBottomRef = useRef<HTMLDivElement | null>(null);
+  const orbCenterRef = useRef<HTMLDivElement | null>(null);
 
   const workProudTitleRef = useRef<HTMLDivElement | null>(null);
   const proudKickerRef = useRef<HTMLSpanElement | null>(null);
@@ -57,6 +61,24 @@ export const ExpertiseSection: React.FC<ExpertiseSectionProps> = () => {
   const applyTransforms = useCallback(
     (p: number) => {
       const isMobile = window.innerWidth <= 850;
+
+      // Dynamic reactive background gradient lighting
+      if (orbTopRef.current) {
+        const moveY = (p - 0.5) * 80;
+        const moveX = Math.sin(p * Math.PI) * 45;
+        orbTopRef.current.style.transform = `translate3d(${moveX.toFixed(1)}px, ${moveY.toFixed(1)}px, 0)`;
+      }
+
+      if (orbBottomRef.current) {
+        const moveY = -(p - 0.5) * 75;
+        const moveX = -Math.cos(p * Math.PI) * 40;
+        orbBottomRef.current.style.transform = `translate3d(${moveX.toFixed(1)}px, ${moveY.toFixed(1)}px, 0)`;
+      }
+
+      if (orbCenterRef.current) {
+        const pulseScale = 1 + Math.sin(p * Math.PI * 2) * 0.08;
+        orbCenterRef.current.style.transform = `translate3d(-50%, -50%, 0) scale(${pulseScale.toFixed(3)})`;
+      }
 
       // -------------------------------------------------------------
       // PHASE 1: Rolling Expertise Showcase (progress 0.0 -> 0.65)
@@ -83,9 +105,10 @@ export const ExpertiseSection: React.FC<ExpertiseSectionProps> = () => {
         wheelListRef.current.style.transform = `translate3d(0, ${wheelOffset.toFixed(2)}px, 0)`;
       }
 
-      // Depth-of-Field Blur, Opacity, and Scale for each item in the wheel
+      // Depth-of-Field Blur, Opacity, Scale, and adjacent Dot Pip for each item
       for (let i = 0; i < totalItems; i++) {
         const itemEl = itemRefs.current[i];
+        const pipEl = pipRefs.current[i];
         if (!itemEl) continue;
 
         const dist = Math.abs(continuousIndex - i);
@@ -100,24 +123,29 @@ export const ExpertiseSection: React.FC<ExpertiseSectionProps> = () => {
           opacity = 1;
           scale = 1.02;
           color = '#0b0d0b';
+
+          if (pipEl) {
+            const pipAlpha = clamp(1 - dist * 2.2, 0, 1);
+            pipEl.style.opacity = `${pipAlpha.toFixed(3)}`;
+            pipEl.style.transform = `scale(${(0.85 + pipAlpha * 0.15).toFixed(3)})`;
+          }
         } else {
           const extra = dist - 0.45;
           blur = Math.min(6.5, extra * 3.2);
           opacity = Math.max(0.18, 1 - extra * 0.46);
           scale = Math.max(0.88, 1.02 - extra * 0.05);
-          color = '#8e948e';
+          color = '#828982';
+
+          if (pipEl) {
+            pipEl.style.opacity = '0';
+            pipEl.style.transform = 'scale(0.4)';
+          }
         }
 
         itemEl.style.filter = blur > 0.1 ? `blur(${blur.toFixed(2)}px)` : 'none';
         itemEl.style.opacity = `${opacity.toFixed(3)}`;
         itemEl.style.transform = `scale3d(${scale.toFixed(3)}, ${scale.toFixed(3)}, 1)`;
         itemEl.style.color = color;
-      }
-
-      // Subtle vertical breathing for focal indicator pip
-      if (focalPipRef.current) {
-        const floatOffset = Math.sin(continuousIndex * Math.PI) * 4;
-        focalPipRef.current.style.transform = `translate3d(0, ${floatOffset.toFixed(2)}px, 0)`;
       }
 
       // -------------------------------------------------------------
@@ -205,7 +233,20 @@ export const ExpertiseSection: React.FC<ExpertiseSectionProps> = () => {
       <span id="services" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} />
 
       <div ref={stickyRef} className="a2h-exp-sticky">
-        {/* PHASE 1: Sticky 2-Column Showroom */}
+        {/* Layer 1: Atmospheric Ambient Gradient Backdrop */}
+        <div className="a2h-exp-backdrop" aria-hidden="true">
+          <div ref={orbTopRef} className="a2h-exp-ambient-orb a2h-exp-ambient-orb--top" />
+          <div ref={orbBottomRef} className="a2h-exp-ambient-orb a2h-exp-ambient-orb--bottom" />
+          <div ref={orbCenterRef} className="a2h-exp-ambient-orb a2h-exp-ambient-orb--center" />
+
+          {/* Architectural Studio Blueprint Grid Texture */}
+          <div className="a2h-exp-grid-texture" />
+
+          {/* Soft Edge Blending Vignette */}
+          <div className="a2h-exp-vignette" />
+        </div>
+
+        {/* Layer 2: PHASE 1 Sticky 2-Column Showroom */}
         <div ref={showroomStageRef} className="a2h-exp-showroom">
           {/* Left Column: Clean & Uncluttered Headline and Subtext */}
           <div className="a2h-exp-left">
@@ -223,9 +264,6 @@ export const ExpertiseSection: React.FC<ExpertiseSectionProps> = () => {
           {/* Right Column: Cylindrical Rolling Stack with Depth of Field Blur */}
           <div className="a2h-exp-right">
             <div className="a2h-exp-wheel-stage">
-              {/* Subtle focal indicator pip aligned with the center active line */}
-              <div ref={focalPipRef} className="a2h-exp-focal-pip" aria-hidden="true" />
-
               <div ref={wheelListRef} className="a2h-exp-wheel-list">
                 {EXPERTISE_ITEMS.map((item, idx) => (
                   <div
@@ -235,7 +273,15 @@ export const ExpertiseSection: React.FC<ExpertiseSectionProps> = () => {
                     }}
                     className="a2h-exp-wheel-item"
                   >
-                    <span>{item}</span>
+                    <span className="a2h-exp-wheel-text">{item}</span>
+                    {/* Focal dot indicator positioned immediately adjacent to active capability */}
+                    <span
+                      ref={(el) => {
+                        pipRefs.current[idx] = el;
+                      }}
+                      className="a2h-exp-item-pip"
+                      aria-hidden="true"
+                    />
                   </div>
                 ))}
               </div>
@@ -243,7 +289,7 @@ export const ExpertiseSection: React.FC<ExpertiseSectionProps> = () => {
           </div>
         </div>
 
-        {/* PHASE 2: Centered Impact Headline "WORK I'M SUPER PROUD OF." with Kinetic Typography */}
+        {/* Layer 3: PHASE 2 Centered Impact Headline "WORK I'M SUPER PROUD OF." */}
         <div ref={workProudTitleRef} className="a2h-exp-work-proud">
           <span ref={proudKickerRef} className="a2h-exp-proud-kicker">
             SELECTED PORTFOLIO

@@ -1415,7 +1415,7 @@ section#expertise {
   position: relative;
   width: 100%;
   height: 280vh;
-  background: #ffffff;
+  background: linear-gradient(175deg, #f8f9f6 0%, #edf1ea 48%, #e4e8e1 100%);
   border-top: 1px solid var(--line);
 }
 
@@ -1429,8 +1429,69 @@ section#expertise {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  background: linear-gradient(175deg, #f8f9f6 0%, #edf1ea 48%, #e4e8e1 100%);
   user-select: none;
+}
+
+/* Layer 1: Atmospheric Ambient Gradient Backdrop & Texture */
+.a2h-exp-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.a2h-exp-ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.a2h-exp-ambient-orb--top {
+  top: -12%;
+  right: 10%;
+  width: clamp(420px, 52vw, 820px);
+  height: clamp(420px, 52vw, 820px);
+  background: radial-gradient(circle, rgba(206, 226, 212, 0.72) 0%, rgba(225, 238, 228, 0.35) 45%, transparent 72%);
+  filter: blur(60px);
+}
+
+.a2h-exp-ambient-orb--bottom {
+  bottom: -16%;
+  left: 6%;
+  width: clamp(400px, 48vw, 760px);
+  height: clamp(400px, 48vw, 760px);
+  background: radial-gradient(circle, rgba(238, 232, 216, 0.75) 0%, rgba(246, 242, 232, 0.38) 46%, transparent 70%);
+  filter: blur(60px);
+}
+
+.a2h-exp-ambient-orb--center {
+  top: 50%;
+  left: 54%;
+  width: clamp(340px, 44vw, 680px);
+  height: clamp(340px, 44vw, 680px);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(242, 247, 240, 0.5) 40%, transparent 72%);
+  filter: blur(45px);
+}
+
+.a2h-exp-grid-texture {
+  position: absolute;
+  inset: 0;
+  background-size: 56px 56px;
+  background-image:
+    linear-gradient(to right, rgba(11, 13, 11, 0.034) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 13, 11, 0.034) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, black 25%, transparent 88%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, black 25%, transparent 88%);
+}
+
+.a2h-exp-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 45%, rgba(214, 222, 212, 0.35) 100%);
+  pointer-events: none;
 }
 
 /* Phase 1: 2-Column Showroom */
@@ -1444,6 +1505,7 @@ section#expertise {
   margin: 0 auto;
   padding: 0 clamp(28px, 5vw, 72px);
   width: 100%;
+  z-index: 10;
   will-change: transform, opacity;
 }
 
@@ -1462,7 +1524,7 @@ section#expertise {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #71717a;
+  color: #5d635d;
 }
 
 .a2h-exp-headline {
@@ -1480,7 +1542,7 @@ section#expertise {
 .a2h-exp-subtext {
   font-size: clamp(14px, 1.1vw, 15.5px);
   line-height: 1.6;
-  color: #52525b;
+  color: #484e48;
   margin: 6px 0 0;
   max-width: 360px;
   font-weight: 400;
@@ -1511,20 +1573,6 @@ section#expertise {
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 24%, black 76%, transparent 100%);
 }
 
-.a2h-exp-focal-pip {
-  position: absolute;
-  top: calc(50% - 4px);
-  right: clamp(16px, 2.5vw, 36px);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--ink);
-  box-shadow: 0 0 10px rgba(11, 13, 11, 0.25);
-  z-index: 5;
-  pointer-events: none;
-  will-change: transform;
-}
-
 .a2h-exp-wheel-list {
   position: absolute;
   top: calc(50% - 42px);
@@ -1537,9 +1585,10 @@ section#expertise {
 
 .a2h-exp-wheel-item {
   height: 84px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 16px;
   font-family: var(--font);
   font-size: clamp(38px, 4.8vw, 76px);
   font-weight: 750;
@@ -1549,6 +1598,24 @@ section#expertise {
   transition: filter 0.1s linear, opacity 0.1s linear, transform 0.1s linear, color 0.1s linear;
   transform-origin: left center;
   will-change: transform, filter, opacity;
+}
+
+.a2h-exp-wheel-text {
+  display: inline-block;
+}
+
+.a2h-exp-item-pip {
+  display: inline-block;
+  width: clamp(7px, 0.8vw, 10px);
+  height: clamp(7px, 0.8vw, 10px);
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 10px rgba(11, 13, 11, 0.35);
+  flex-shrink: 0;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.12s linear, transform 0.12s ease;
+  will-change: transform, opacity;
 }
 
 /* Phase 2: Centered Impact Headline "WORK I'M SUPER PROUD OF." */
@@ -1575,7 +1642,7 @@ section#expertise {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #71717a;
+  color: #5d635d;
 }
 
 .a2h-exp-work-proud__headline {
@@ -1615,13 +1682,43 @@ section#expertise {
 }
 
 @media (max-width: 850px) {
+  .a2h-exp-scroll-track,
+  section#expertise,
+  .a2h-exp-sticky {
+    background: linear-gradient(175deg, #f7f9f5 0%, #edf2ea 50%, #e3e8df 100%);
+  }
+
+  .a2h-exp-ambient-orb--top {
+    top: -5%;
+    right: -10%;
+    width: 320px;
+    height: 320px;
+    filter: blur(45px);
+  }
+
+  .a2h-exp-ambient-orb--bottom {
+    bottom: -8%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    filter: blur(45px);
+  }
+
+  .a2h-exp-ambient-orb--center {
+    top: 45%;
+    left: 50%;
+    width: 260px;
+    height: 260px;
+    filter: blur(35px);
+  }
+
   .a2h-exp-showroom {
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    gap: clamp(12px, 2.5vh, 22px);
-    padding: clamp(16px, 2.5vh, 32px) 20px;
+    gap: clamp(14px, 3vh, 26px);
+    padding: clamp(20px, 3vh, 36px) 20px;
   }
 
   .a2h-exp-left {
@@ -1634,14 +1731,19 @@ section#expertise {
   }
 
   .a2h-exp-headline {
-    font-size: clamp(24px, 6.2vw, 34px);
+    font-size: clamp(26px, 6.8vw, 36px);
     align-items: center;
     text-align: center;
     line-height: 1.1;
   }
 
   .a2h-exp-subtext {
-    display: none;
+    display: block;
+    font-size: 13.5px;
+    max-width: 320px;
+    text-align: center;
+    margin: 4px auto 0;
+    color: #555b55;
   }
 
   .a2h-exp-right {
@@ -1656,14 +1758,10 @@ section#expertise {
   .a2h-exp-wheel-stage {
     width: 100%;
     max-width: 100%;
-    height: clamp(220px, 40vh, 290px);
+    height: clamp(220px, 38vh, 280px);
     justify-content: center;
     mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
-  }
-
-  .a2h-exp-focal-pip {
-    display: none;
   }
 
   .a2h-exp-wheel-list {
@@ -1683,6 +1781,12 @@ section#expertise {
     width: 100%;
     letter-spacing: -0.03em;
     transform-origin: center center;
+    gap: 12px;
+  }
+
+  .a2h-exp-item-pip {
+    width: 6px;
+    height: 6px;
   }
 
   .a2h-exp-work-proud__headline {
